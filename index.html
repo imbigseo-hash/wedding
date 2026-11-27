@@ -178,6 +178,10 @@
       -webkit-backdrop-filter: blur(14px);
       border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
     }
+    #stickyNavHeader.is-pinned.is-dark-header {
+      background-color: rgba(10, 10, 10, 0.9);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.12);
+    }
 
     #kineticMasthead {
       position: fixed;
@@ -195,76 +199,75 @@
       will-change: transform, top;
     }
 
-    /* Sticky Editorial Overlap Layers */
+    /* Editorial Section Layering */
     .editorial-layer {
       position: relative;
-      z-index: 12;
+      z-index: 10;
       background-color: #FFFFFF;
     }
     .editorial-layer-elevated {
       position: relative;
-      z-index: 16;
+      z-index: 12;
       background-color: #FFFFFF;
       box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.04);
     }
     .editorial-layer-dark {
       position: relative;
-      z-index: 20;
+      z-index: 14;
       background-color: #0A0A0A;
       color: #FFFFFF;
       box-shadow: 0 -20px 44px rgba(0, 0, 0, 0.18);
     }
 
-    /* 3. Clean Editorial Photo Reveal (No Curtain) */
-    .shutter-frame {
-      position: relative;
-      overflow: hidden;
-      background-color: #EBEBED;
-    }
-    .shutter-img {
-      opacity: 0;
-      transform: scale(1.08);
-      transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1.25s cubic-bezier(0.16, 1, 0.3, 1), filter 1.1s cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: transform, opacity;
-    }
-    .shutter-frame.is-revealed .shutter-img {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    /* 4. Scroll-Scrubbed Word-by-Word Illumination */
+    /* Scroll-Scrubbed Invitation Word Highlight */
     .scrub-word {
       color: #CCCCCC;
-      transition: color 0.22s ease;
+      transition: color 0.35s ease;
     }
     .scrub-word.lit {
-      color: #111111;
+      color: #000000;
     }
 
-    /* Fountain Pen Live Ink Signature Stroke */
+    /* Fountain Pen Live Ink Signature */
     .sig-path {
-      stroke-dasharray: 520;
-      stroke-dashoffset: 520;
-      transition: stroke-dashoffset 2.1s cubic-bezier(0.25, 1, 0.5, 1);
+      stroke-dasharray: 480;
+      stroke-dashoffset: 480;
+      transition: stroke-dashoffset 2.2s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .sig-drawn .sig-path {
       stroke-dashoffset: 0;
     }
 
-    /* 5. Dual-Track Reverse Film Strip Marquee */
+    /* Clean Editorial Photo Frame Reveal (No Black Curtain) */
+    .shutter-frame {
+      overflow: hidden;
+      background-color: #F2F2F4;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .shutter-frame.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .shutter-img {
+      transform: scale(1.07);
+      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .shutter-frame.is-revealed .shutter-img {
+      transform: scale(1);
+    }
+
+    /* Dual-Track Reverse Film Strip Marquee */
     .film-track-forward {
       display: flex;
       width: max-content;
-      animation: filmScrollForward 32s linear infinite;
+      animation: filmScrollForward 30s linear infinite;
     }
     .film-track-reverse {
       display: flex;
       width: max-content;
-      animation: filmScrollReverse 36s linear infinite;
-    }
-    .film-track-forward:hover,
-    .film-track-reverse:hover {
-      animation-play-state: paused;
+      animation: filmScrollReverse 34s linear infinite;
     }
     @keyframes filmScrollForward {
       0% {
@@ -272,6 +275,37 @@
       }
       100% {
         transform: translate3d(-50%, 0, 0);
+      }
+    }
+
+    /* Double-Tap Editorial Line Heart Stamp */
+    .double-tap-heart {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0.4);
+      pointer-events: none;
+      z-index: 25;
+      opacity: 0;
+      filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.35));
+      animation: heartStampPop 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes heartStampPop {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.45);
+      }
+      28% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.08);
+      }
+      55% {
+        opacity: 0.95;
+        transform: translate(-50%, -50%) scale(0.98);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -62%) scale(1.05);
       }
     }
     @keyframes filmScrollReverse {
@@ -581,10 +615,10 @@
       </div>
 
       <!-- Spread 1: Full-Bleed Portrait with MONO/COLOR Switch -->
-      <figure class="mb-12">
+      <figure class="mb-6">
         <div
-          onclick="openLightbox(0)"
-          class="shutter-frame loupe-target relative w-full aspect-[3/4] rounded-2xl cursor-pointer"
+          data-gallery-idx="0"
+          class="gallery-tap-frame shutter-frame loupe-target relative w-full aspect-[3/4] rounded-2xl cursor-pointer"
         >
           <img
             src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=90"
@@ -600,18 +634,14 @@
             <span class="darkroom-label font-editorial text-[10px] tracking-[0.18em] uppercase">MONO</span>
           </button>
         </div>
-        <figcaption class="mt-3 px-1 flex items-center justify-between text-[11.5px] text-mutedgray">
-          <span class="type-caption font-editorial italic tracking-[0.1em]" data-caption="Chapter I — Stillness in May"></span>
-          <span class="text-[10px] tracking-[0.12em] uppercase">TAP TO EXPAND</span>
-        </figcaption>
       </figure>
 
       <!-- Spread 2 & 3: Dual-Speed Contrasting 2-Column Editorial Spread -->
-      <div id="dualGrid" class="grid grid-cols-2 gap-3.5 mb-12 items-start">
+      <div id="dualGrid" class="grid grid-cols-2 gap-3.5 mb-6 items-start">
         <figure id="dualColLeft" class="will-change-transform">
           <div
-            onclick="openLightbox(1)"
-            class="shutter-frame loupe-target relative w-full aspect-[3/4.2] rounded-2xl cursor-pointer"
+            data-gallery-idx="1"
+            class="gallery-tap-frame shutter-frame loupe-target relative w-full aspect-[3/4.2] rounded-2xl cursor-pointer"
           >
             <img
               src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=900&q=90"
@@ -619,15 +649,12 @@
               class="editorial-photo shutter-img w-full h-full object-cover"
             />
           </div>
-          <figcaption class="mt-2.5 px-0.5">
-            <span class="type-caption font-editorial italic text-[11.5px] tracking-[0.08em] text-mutedgray" data-caption="Chapter II — Gaze"></span>
-          </figcaption>
         </figure>
 
         <figure id="dualColRight" class="mt-10 will-change-transform">
           <div
-            onclick="openLightbox(2)"
-            class="shutter-frame loupe-target relative w-full aspect-[3/4.2] rounded-2xl cursor-pointer"
+            data-gallery-idx="2"
+            class="gallery-tap-frame shutter-frame loupe-target relative w-full aspect-[3/4.2] rounded-2xl cursor-pointer"
           >
             <img
               src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=900&q=90"
@@ -635,17 +662,14 @@
               class="editorial-photo shutter-img w-full h-full object-cover"
             />
           </div>
-          <figcaption class="mt-2.5 px-0.5">
-            <span class="type-caption font-editorial italic text-[11.5px] tracking-[0.08em] text-mutedgray" data-caption="Chapter III — Whisper"></span>
-          </figcaption>
         </figure>
       </div>
 
       <!-- Spread 4: Wide Cinema Ratio Frame -->
-      <figure class="mb-6">
+      <figure class="mb-4">
         <div
-          onclick="openLightbox(3)"
-          class="shutter-frame loupe-target relative w-full aspect-[16/10] rounded-2xl cursor-pointer"
+          data-gallery-idx="3"
+          class="gallery-tap-frame shutter-frame loupe-target relative w-full aspect-[16/10] rounded-2xl cursor-pointer"
         >
           <img
             src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&q=90"
@@ -653,10 +677,6 @@
             class="editorial-photo shutter-img w-full h-full object-cover"
           />
         </div>
-        <figcaption class="mt-3 px-1 flex items-center justify-between text-[11.5px] text-mutedgray">
-          <span class="type-caption font-editorial italic tracking-[0.1em]" data-caption="Chapter IV — Promise"></span>
-          <span class="text-[10px] tracking-[0.12em] uppercase">HOLD TO ZOOM</span>
-        </figcaption>
       </figure>
     </section>
 
@@ -892,7 +912,7 @@
     <!-- ===============================================================
          SECTION 6: INVERTED DARK LOOKBOOK FINALE (마음 전하실 곳 & 클로징)
     ================================================================ -->
-    <section class="editorial-layer-dark px-6 pt-20 pb-24">
+    <section id="darkFinaleSection" class="editorial-layer-dark px-6 pt-20 pb-24">
       <div class="text-center mb-10">
         <p class="font-editorial italic text-[15px] tracking-[0.2em] text-white/50">With Gratitude</p>
         <h2 class="font-serifkr text-[20px] font-light text-purewhite mt-1.5">마음 전하실 곳</h2>
@@ -1020,13 +1040,22 @@
 
       <!-- Share Link & Closing Credits -->
       <div class="mt-14 pt-10 border-t border-white/10 text-center">
-        <button
-          type="button"
-          onclick="copyText(window.location.href, '청첩장 링크가 클립보드에 복사되었습니다.')"
-          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-white/25 text-[11.5px] tracking-[0.14em] uppercase text-purewhite hover:bg-purewhite hover:text-pureblack active:scale-95 transition-all"
-        >
-          <span>청첩장 주소 복사하기</span>
-        </button>
+        <div class="flex flex-wrap items-center justify-center gap-2.5">
+          <button
+            type="button"
+            onclick="shareWeddingInvitation()"
+            class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-purewhite text-pureblack text-[11.5px] font-medium tracking-[0.1em] active:scale-95 transition-transform"
+          >
+            <span>청첩장 전달하기</span>
+          </button>
+          <button
+            type="button"
+            onclick="copyText(window.location.href, '청첩장 링크가 클립보드에 복사되었습니다.')"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/25 text-[11.5px] tracking-[0.1em] text-purewhite hover:bg-purewhite hover:text-pureblack active:scale-95 transition-all"
+          >
+            <span>주소 복사</span>
+          </button>
+        </div>
 
         <p class="font-editorial italic text-[17px] tracking-[0.12em] text-purewhite/90 mt-10">
           SEO DAEHEE &amp; PARK YOOJEONG
@@ -1166,6 +1195,8 @@
     const dualColRight = document.getElementById('dualColRight');
     const marqueeShowcase = document.getElementById('marqueeShowcase');
     const kineticWatermark = document.getElementById('kineticWatermark');
+    const darkFinaleSection = document.getElementById('darkFinaleSection');
+    const bgmToggleBtn = document.getElementById('bgmToggleBtn');
 
     // 1. Cinematic Black Curtain Preloader Sequence (000% -> 100%)
     function runCinematicPreloader() {
@@ -1320,10 +1351,34 @@
 
         if (scrollTop >= heroScrollRange - 12) {
           stickyNavHeader.classList.add('is-pinned');
-          kineticMasthead.style.color = '#000000';
+          const inDarkFinale =
+            darkFinaleSection && darkFinaleSection.getBoundingClientRect().top <= 54;
+
+          if (inDarkFinale) {
+            stickyNavHeader.classList.add('is-dark-header');
+            kineticMasthead.style.color = '#FFFFFF';
+            if (globalProgressBar) globalProgressBar.style.backgroundColor = '#FFFFFF';
+            if (bgmToggleBtn) {
+              bgmToggleBtn.classList.remove('bg-purewhite/85', 'text-pureblack', 'border-black/10');
+              bgmToggleBtn.classList.add('bg-white/15', 'text-purewhite', 'border-white/20');
+            }
+          } else {
+            stickyNavHeader.classList.remove('is-dark-header');
+            kineticMasthead.style.color = '#000000';
+            if (globalProgressBar) globalProgressBar.style.backgroundColor = '#000000';
+            if (bgmToggleBtn) {
+              bgmToggleBtn.classList.remove('bg-white/15', 'text-purewhite', 'border-white/20');
+              bgmToggleBtn.classList.add('bg-purewhite/85', 'text-pureblack', 'border-black/10');
+            }
+          }
         } else {
-          stickyNavHeader.classList.remove('is-pinned');
+          stickyNavHeader.classList.remove('is-pinned', 'is-dark-header');
           kineticMasthead.style.color = '#FFFFFF';
+          if (globalProgressBar) globalProgressBar.style.backgroundColor = '#000000';
+          if (bgmToggleBtn) {
+            bgmToggleBtn.classList.remove('bg-white/15', 'text-purewhite', 'border-white/20');
+            bgmToggleBtn.classList.add('bg-purewhite/85', 'text-pureblack', 'border-black/10');
+          }
         }
       }
 
@@ -1423,7 +1478,7 @@
         inlineDots.forEach((d) => (d.style.backgroundColor = 'rgba(255,255,255,0.6)'));
         inlineLabels.forEach((l) => (l.textContent = 'MONO'));
         if (lbImg) lbImg.classList.add('grayscale');
-        showToast('클래식 흑백 화보 모드로 전환되었습니다.');
+        showToast('클래식 흑백 매거진 모드로 전환되었습니다.');
       }
     }
 
@@ -1438,33 +1493,54 @@
         },
         { passive: true }
       );
-      onScrollFrame();
+      window.requestAnimationFrame(onScrollFrame);
     }
 
-    // 5. Clean Editorial Photo Reveal Observer & Typewriter Captions
+    // 5. Clean Editorial Photo Reveal Observer & Double-Tap Heart Stamp
     const shutterObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-revealed');
-            const fig = entry.target.closest('figure');
-            const capEl = fig ? fig.querySelector('.type-caption') : null;
-            if (capEl && !capEl.dataset.typed) {
-              capEl.dataset.typed = 'true';
-              const fullText = capEl.dataset.caption || '';
-              let i = 0;
-              const typeTimer = setInterval(() => {
-                capEl.textContent = fullText.slice(0, i + 1);
-                i++;
-                if (i >= fullText.length) clearInterval(typeTimer);
-              }, 36);
-            }
           }
         });
       },
       { root: appScroll, threshold: 0.16 }
     );
     document.querySelectorAll('.shutter-frame').forEach((el) => shutterObserver.observe(el));
+
+    function spawnDoubleTapHeart(container) {
+      const heart = document.createElement('div');
+      heart.className = 'double-tap-heart';
+      heart.innerHTML = `
+        <svg width="58" height="58" viewBox="0 0 24 24" fill="rgba(255,255,255,0.22)" stroke="#FFFFFF" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+      `;
+      container.appendChild(heart);
+      setTimeout(() => heart.remove(), 900);
+    }
+
+    document.querySelectorAll('.gallery-tap-frame').forEach((frame) => {
+      let lastTapTime = 0;
+      let singleTapTimer = null;
+      const idx = Number(frame.dataset.galleryIdx || 0);
+
+      frame.addEventListener('click', () => {
+        if (isLoupeActive) return;
+        const now = Date.now();
+        if (now - lastTapTime < 280) {
+          clearTimeout(singleTapTimer);
+          lastTapTime = 0;
+          spawnDoubleTapHeart(frame);
+        } else {
+          lastTapTime = now;
+          singleTapTimer = setTimeout(() => {
+            openLightbox(idx);
+          }, 260);
+        }
+      });
+    });
 
     // 7. 3D Perspective Tilt + Specular Glass Glare
     document.querySelectorAll('.tilt-card').forEach((card) => {
@@ -1750,23 +1826,42 @@
         showToast(message);
       } catch (err) {
         showToast('복사에 실패했습니다.');
+      } finally {
+        document.body.removeChild(temp);
       }
-      document.body.removeChild(temp);
     }
 
     let toastTimer = null;
-    function showToast(message) {
+    function showToast(msg) {
       const bar = document.getElementById('toastBar');
       if (!bar) return;
-      bar.textContent = message;
+      bar.textContent = msg;
       bar.classList.remove('opacity-0', 'translate-y-2');
       bar.classList.add('opacity-100', 'translate-y-0');
-
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => {
-        bar.classList.remove('opacity-100', 'translate-y-0');
         bar.classList.add('opacity-0', 'translate-y-2');
+        bar.classList.remove('opacity-100', 'translate-y-0');
       }, 2400);
+    }
+
+    // Native Share Sheet (AirDrop / KakaoTalk / Messages) with Clipboard Fallback
+    async function shareWeddingInvitation() {
+      const shareData = {
+        title: '서대희 ♥ 박유정 결혼식에 초대합니다',
+        text: '2027년 5월 8일 토요일 오후 1시 · 제이아트컨벤션 1층 아모르홀',
+        url: window.location.href,
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          return;
+        } catch (err) {
+          if (err && err.name === 'AbortError') return;
+        }
+      }
+      copyText(window.location.href, '청첩장 링크가 클립보드에 복사되었습니다.');
     }
 
     // Tmap App Deep-Link Launcher (No API Key Required)
