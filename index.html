@@ -155,6 +155,7 @@
       pointer-events: none;
       transform-origin: center center;
       white-space: nowrap;
+      max-width: calc(100vw - 56px);
       will-change: transform, top, color;
       transition: color 0.3s ease;
     }
@@ -496,8 +497,8 @@
     <header id="stickyNavHeader" aria-hidden="true"></header>
     <div
       id="kineticMasthead"
-      class="font-editorial tracking-[0.04em] text-purewhite select-none text-center"
-      style="top: 112px; font-size: 38px; transform: translate3d(-50%, 0, 0) scale(1);"
+      class="font-editorial tracking-[0.03em] text-purewhite select-none text-center"
+      style="top: 108px; font-size: clamp(25px, 6.6vw, 34px); transform: translate3d(-50%, 0, 0) scale(1);"
     >
       DAEHEE <span class="italic font-normal opacity-80">&amp;</span> YOOJEONG
     </div>
@@ -1316,10 +1317,10 @@
       const heroDist = Math.max(1, heroTrack.offsetHeight - vh * 0.45);
       const pinProgress = clamp(scrollTop / heroDist, 0, 1);
 
-      const startTop = 104;
+      const startTop = 108;
       const endTop = 17;
       const currentTop = startTop - pinProgress * (startTop - endTop);
-      const currentScale = 1 - pinProgress * 0.56; // 38px -> ~16.7px
+      const currentScale = 1 - pinProgress * 0.44; // ~26px -> ~14.5px on iPhone 16 Pro
 
       kineticMasthead.style.top = `${currentTop}px`;
       kineticMasthead.style.transform = `translate3d(-50%, 0, 0) scale(${currentScale})`;
