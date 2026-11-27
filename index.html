@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>서대희 &amp; 박유정 — 2027. 05. 08</title>
 
-  <!-- =================================================================
-       카카오톡 및 SNS 링크 공유용 오픈그래프(OG) 메타 태그
-       * 실제 대표 사진 업로드 후 og:image의 content를 본인의 배포 주소 + 사진 파일명으로 변경하세요.
-  ================================================================== -->
+  <!-- 카카오톡 및 SNS 링크 공유용 오픈그래프(OG) 메타 태그 -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="서대희 ♥ 박유정 결혼식에 초대합니다" />
   <meta property="og:description" content="2027년 5월 8일 토요일 오후 1시 · 제이아트컨벤션 1층 아모르홀" />
@@ -21,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+KR:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 
   <script>
     tailwind.config = {
@@ -30,16 +27,17 @@
           colors: {
             purewhite: '#FFFFFF',
             offwhite: '#FAFAFA',
-            applegray: '#F2F2F2',
+            applegray: '#F5F5F7',
             pureblack: '#000000',
-            charcoal: '#141414',
-            mutedgray: '#737373',
-            hairline: '#E5E5E5',
+            darkvoid: '#0A0A0A',
+            charcoal: '#1D1D1F',
+            mutedgray: '#86868B',
+            hairline: '#E5E5EA',
           },
           fontFamily: {
             editorial: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-            serifKr: ['"Noto Serif KR"', 'serif'],
-            sansKr: ['"Pretendard"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            serifkr: ['"Noto Serif KR"', 'serif'],
+            sanskr: ['"Pretendard"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
           },
         },
       },
@@ -52,35 +50,73 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
+    html,
+    body {
       margin: 0;
       padding: 0;
-      background-color: #000000;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #F2F2F4;
       color: #000000;
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
     }
 
-    /* Main Scroll Viewport */
+    /* Smooth Native Mobile Momentum Scroll Container */
     #appScroll {
       height: 100dvh;
       overflow-y: auto;
       overflow-x: hidden;
-      scroll-behavior: smooth;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      position: relative;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
     }
+
     #appScroll::-webkit-scrollbar {
       display: none;
     }
+    #appScroll {
+      scrollbar-width: none;
+    }
 
-    /* 1. Cinematic Black Curtain Preloader */
+    /* Fine Art Paper Film Grain Overlay */
+    .paper-grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 42;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Darkroom Develop Flash Wash */
+    #darkroomWash {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 41;
+      background: radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.45), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.45s ease;
+    }
+    #darkroomWash.flash {
+      opacity: 1;
+    }
+
+    /* Darkroom B&W <-> Natural Color Photo Toggle */
+    .editorial-photo {
+      filter: grayscale(100%) contrast(1.1);
+      transition: filter 1.1s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    body.color-developed .editorial-photo {
+      filter: grayscale(0%) contrast(1.03) saturate(1.05);
+    }
+
+    /* 1. Cinematic Split-Curtain Preloader */
     #preloaderOverlay {
       position: fixed;
       inset: 0;
-      z-index: 90;
+      z-index: 60;
       pointer-events: auto;
       display: flex;
       flex-direction: column;
@@ -96,38 +132,32 @@
       transition: transform 1.15s cubic-bezier(0.77, 0, 0.175, 1);
       will-change: transform;
     }
-    .curtain-top { top: 0; }
-    .curtain-bottom { bottom: 0; }
+    .curtain-top {
+      top: 0;
+    }
+    .curtain-bottom {
+      bottom: 0;
+    }
+    #preloaderOverlay.curtain-open {
+      pointer-events: none;
+    }
     #preloaderOverlay.curtain-open .curtain-top {
       transform: translateY(-100%);
     }
     #preloaderOverlay.curtain-open .curtain-bottom {
       transform: translateY(100%);
     }
-    #preloaderOverlay.curtain-open {
-      pointer-events: none;
-    }
-    #preloaderCenter {
+    #preloaderContent {
       position: relative;
       z-index: 2;
-      transition: opacity 0.45s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.45s ease, transform 0.45s ease;
     }
-    #preloaderOverlay.curtain-open #preloaderCenter {
+    #preloaderOverlay.curtain-open #preloaderContent {
       opacity: 0;
-      transform: scale(0.95);
+      transform: scale(0.96);
     }
 
-    /* Cover Photo Initial Zoom-Out (1.18 -> 1.0) on Curtain Open */
-    #heroImg {
-      transform: scale(1.18);
-      transition: transform 1.85s cubic-bezier(0.16, 1, 0.3, 1), filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, filter;
-    }
-    body.experience-started #heroImg {
-      transition: filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* 2. Hero Kinetic Masthead & Pinned Sticky Header */
+    /* 2. Hero Kinetic Masthead (Scales & Pins to Header on Scroll) */
     #stickyNavHeader {
       position: fixed;
       top: 0;
@@ -135,1132 +165,976 @@
       transform: translateX(-50%);
       width: 100%;
       max-width: 480px;
-      height: 56px;
-      z-index: 42;
+      height: 54px;
+      z-index: 38;
       pointer-events: none;
-      transition: background-color 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease;
-      border-bottom: 0.5px solid transparent;
+      background-color: rgba(255, 255, 255, 0);
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0);
+      transition: background-color 0.35s ease, border-color 0.35s ease;
     }
     #stickyNavHeader.is-pinned {
-      background-color: rgba(255, 255, 255, 0.88);
+      background-color: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border-bottom-color: #E5E5E5;
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
     }
 
     #kineticMasthead {
       position: fixed;
       left: 50%;
-      z-index: 43;
+      top: 108px;
+      transform: translateX(-50%) scale(1);
+      transform-origin: center top;
+      z-index: 39;
       pointer-events: none;
-      transform-origin: center center;
       white-space: nowrap;
-      max-width: calc(100vw - 56px);
-      will-change: transform, top, color;
-      transition: color 0.3s ease;
+      color: #FFFFFF;
+      font-size: clamp(23px, 6.2vw, 31px);
+      letter-spacing: 0.1em;
+      transition: color 0.35s ease;
+      will-change: transform, top;
     }
 
-    /* 3. Fine Paper Film Grain Texture Overlay (3%) */
-    .film-grain {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 45;
-      opacity: 0.03;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
-
-    /* 0.5px Architectural Hairline Grid & Corner Crosshairs (+) */
-    .arch-grid-lines {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 480px;
-      pointer-events: none;
-      z-index: 35;
-    }
-    .arch-grid-lines::before,
-    .arch-grid-lines::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 0.5px;
-      background-color: rgba(115, 115, 115, 0.16);
-    }
-    .arch-grid-lines::before { left: 20px; }
-    .arch-grid-lines::after { right: 20px; }
-
-    .crosshair-divider {
+    /* Sticky Editorial Overlap Layers */
+    .editorial-layer {
       position: relative;
-      height: 0.5px;
-      background-color: #E5E5E5;
-      width: 100%;
+      z-index: 12;
+      background-color: #FFFFFF;
     }
-    .crosshair-divider::before,
-    .crosshair-divider::after {
-      content: '+';
-      position: absolute;
-      top: 50%;
-      transform: translateY(-52%);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 13px;
-      line-height: 1;
-      color: #737373;
-      background: transparent;
+    .editorial-layer-elevated {
+      position: relative;
+      z-index: 16;
+      background-color: #FFFFFF;
+      box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.04);
     }
-    .crosshair-divider::before { left: 16.5px; }
-    .crosshair-divider::after { right: 16.5px; }
-
-    /* GPU Accelerated Layer */
-    .gpu-layer {
-      will-change: transform, opacity;
-      transform: translate3d(0, 0, 0);
+    .editorial-layer-dark {
+      position: relative;
+      z-index: 20;
+      background-color: #0A0A0A;
+      color: #FFFFFF;
+      box-shadow: 0 -20px 44px rgba(0, 0, 0, 0.18);
     }
 
-    /* 5. Editorial Accordion Shutter Mask Reveal & Zoom-Settle (1.15 -> 1.0) */
+    /* 3. Clean Editorial Photo Reveal (No Curtain) */
     .shutter-frame {
       position: relative;
       overflow: hidden;
-      clip-path: inset(0 16% 0 16%);
-      opacity: 0.2;
-      transition: clip-path 1.15s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.95s ease;
+      background-color: #EBEBED;
     }
-    .shutter-frame.is-revealed {
-      clip-path: inset(0 0% 0 0%);
-      opacity: 1;
-    }
-    .shutter-frame .shutter-photo {
-      filter: grayscale(100%) contrast(1.15);
-      transform: scale(1.15) translate3d(0, 0, 0);
-      transition: transform 1.45s cubic-bezier(0.16, 1, 0.3, 1), filter 1.25s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, filter;
-    }
-    .shutter-frame.is-revealed .shutter-photo {
-      transform: scale(1.0) translate3d(0, 0, 0);
-    }
-
-    /* Darkroom Develop Mode (B&W <-> Natural Color) */
-    body.color-developed #heroImg {
-      filter: grayscale(0%) contrast(1.04) saturate(1.06) !important;
-    }
-    body.color-developed .shutter-frame .shutter-photo,
-    body.color-developed .film-strip-img,
-    body.color-developed #lbImage {
-      filter: grayscale(0%) contrast(1.03) saturate(1.05) !important;
-    }
-
-    /* Darkroom Develop Ripple Flash */
-    #darkroomWash {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 44;
+    .shutter-img {
       opacity: 0;
-      background: radial-gradient(circle at 85% 92%, rgba(255, 255, 255, 0.45), transparent 70%);
-      transition: opacity 0.65s ease;
+      transform: scale(1.08);
+      transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1.25s cubic-bezier(0.16, 1, 0.3, 1), filter 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform, opacity;
     }
-    #darkroomWash.flash {
+    .shutter-frame.is-revealed .shutter-img {
       opacity: 1;
+      transform: scale(1);
     }
 
-    /* Dual-Speed Staggered Columns */
-    .dual-col-left,
-    .dual-col-right {
-      will-change: transform;
-      transform: translate3d(0, 0, 0);
-    }
-
-    /* Interactive Circular Touch Loupe (High-Res Magnifier) */
-    #touchLoupe {
-      position: fixed;
-      width: 140px;
-      height: 140px;
-      border-radius: 9999px;
-      border: 1px solid rgba(255, 255, 255, 0.9);
-      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.5), inset 0 0 0 0.5px rgba(0, 0, 0, 0.45);
-      pointer-events: none;
-      z-index: 60;
-      opacity: 0;
-      transform: translate(-50%, -115%) scale(0.75);
-      transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      background-repeat: no-repeat;
-      filter: grayscale(100%) contrast(1.2);
-    }
-    #touchLoupe.active {
-      opacity: 1;
-      transform: translate(-50%, -115%) scale(1);
-    }
-
-    /* 6. Dual-Track Reverse 35mm Film Strip Marquee */
-    @keyframes filmMarqueeLeft {
-      0% { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(-50%, 0, 0); }
-    }
-    @keyframes filmMarqueeRight {
-      0% { transform: translate3d(-50%, 0, 0); }
-      100% { transform: translate3d(0, 0, 0); }
-    }
-    .film-track-left {
-      display: flex;
-      width: max-content;
-      animation: filmMarqueeLeft 26s linear infinite;
-    }
-    .film-track-right {
-      display: flex;
-      width: max-content;
-      animation: filmMarqueeRight 28s linear infinite;
-    }
-    .film-track-left:hover,
-    .film-track-left:active,
-    .film-track-right:hover,
-    .film-track-right:active {
-      animation-play-state: paused;
-    }
-    .film-strip-img {
-      filter: grayscale(100%) contrast(1.25);
-      transition: filter 1.1s ease;
-    }
-    .film-sprockets {
-      background-image: repeating-linear-gradient(
-        to right,
-        transparent 0px,
-        transparent 8px,
-        rgba(255, 255, 255, 0.28) 8px,
-        rgba(255, 255, 255, 0.28) 14px,
-        transparent 14px,
-        transparent 22px
-      );
-    }
-
-    /* 4. Scroll-Scrubbed Word-by-Word Reading Highlight */
+    /* 4. Scroll-Scrubbed Word-by-Word Illumination */
     .scrub-word {
       color: #CCCCCC;
-      transition: color 0.18s ease-out;
-      display: inline-block;
+      transition: color 0.22s ease;
     }
     .scrub-word.lit {
-      color: #000000;
+      color: #111111;
     }
 
-    /* Live Fountain-Pen Handwriting Signature SVG Stroke */
-    .sig-stroke {
-      stroke-dasharray: 680;
-      stroke-dashoffset: 680;
-      transition: stroke-dashoffset 2.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .sig-stroke-sub {
+    /* Fountain Pen Live Ink Signature Stroke */
+    .sig-path {
       stroke-dasharray: 520;
       stroke-dashoffset: 520;
-      transition: stroke-dashoffset 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.55s;
+      transition: stroke-dashoffset 2.1s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    .sig-drawn .sig-stroke,
-    .sig-drawn .sig-stroke-sub {
+    .sig-drawn .sig-path {
       stroke-dashoffset: 0;
     }
 
-    /* 7. Mechanical Split-Flap / Flip Countdown Digits */
-    .flip-box {
-      position: relative;
-      background-color: #000000;
-      color: #FFFFFF;
-      border-radius: 14px;
-      padding: 12px 6px;
-      overflow: hidden;
-      perspective: 600px;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    /* 5. Dual-Track Reverse Film Strip Marquee */
+    .film-track-forward {
+      display: flex;
+      width: max-content;
+      animation: filmScrollForward 32s linear infinite;
     }
-    .flip-box::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 50%;
-      height: 0.5px;
-      background-color: rgba(255, 255, 255, 0.22);
-      pointer-events: none;
+    .film-track-reverse {
+      display: flex;
+      width: max-content;
+      animation: filmScrollReverse 36s linear infinite;
     }
-    @keyframes digitFlipPulse {
-      0% { transform: rotateX(-75deg); opacity: 0.35; }
-      60% { transform: rotateX(12deg); opacity: 1; }
-      100% { transform: rotateX(0deg); opacity: 1; }
+    .film-track-forward:hover,
+    .film-track-reverse:hover {
+      animation-play-state: paused;
     }
-    .flip-animate {
-      display: block;
-      transform-origin: center center;
-      animation: digitFlipPulse 0.48s cubic-bezier(0.16, 1, 0.3, 1);
+    @keyframes filmScrollForward {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+    @keyframes filmScrollReverse {
+      0% {
+        transform: translate3d(-50%, 0, 0);
+      }
+      100% {
+        transform: translate3d(0, 0, 0);
+      }
     }
 
-    /* 7. 3D Perspective Tilt Card + Specular Glass Glare */
+    /* 6. Mechanical Split-Flap Countdown Animation */
+    .flip-digit {
+      display: inline-block;
+      perspective: 300px;
+    }
+    .flip-animate {
+      animation: mechanicalFlip 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes mechanicalFlip {
+      0% {
+        transform: rotateX(-75deg) translateY(-4px);
+        opacity: 0.35;
+      }
+      100% {
+        transform: rotateX(0deg) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* 7. 3D Card Tilt & Specular Glare */
     .tilt-card {
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform;
     }
-    .tilt-glare {
+    .tilt-card::after {
+      content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.3s ease;
       background: radial-gradient(
         circle at var(--glare-x, 50%) var(--glare-y, 50%),
-        rgba(255, 255, 255, 0.65) 0%,
-        rgba(255, 255, 255, 0) 65%
+        rgba(255, 255, 255, 0.35),
+        transparent 62%
       );
-      mix-blend-mode: soft-light;
+      transition: opacity 0.3s ease;
     }
-    .tilt-card.tilting .tilt-glare {
+    .tilt-card.tilting::after {
       opacity: 1;
     }
 
-    /* Scroll Velocity Inertia Skew Layer */
-    .velocity-skew {
-      will-change: transform;
-      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+    /* Interactive Touch Loupe */
+    #touchLoupe {
+      position: fixed;
+      width: 132px;
+      height: 132px;
+      border-radius: 9999px;
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35), inset 0 0 0 0.5px rgba(0, 0, 0, 0.25);
+      pointer-events: none;
+      z-index: 45;
+      opacity: 0;
+      transform: translate(-50%, -115%) scale(0.85);
+      transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      background-repeat: no-repeat;
+      filter: grayscale(100%) contrast(1.15);
+    }
+    body.color-developed #touchLoupe {
+      filter: grayscale(0%) contrast(1.04);
+    }
+    #touchLoupe.active {
+      opacity: 1;
+      transform: translate(-50%, -115%) scale(1);
     }
 
-    /* Self-Drawing Architectural Vector Map */
-    .draw-path {
-      stroke-dasharray: var(--len, 600);
-      stroke-dashoffset: var(--len, 600);
-      transition: stroke-dashoffset 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Minimal Sound Equalizer Bars */
+    .eq-bar {
+      width: 1.5px;
+      height: 10px;
+      background-color: currentColor;
+      transform-origin: bottom;
+      transition: transform 0.2s ease;
     }
-    .map-drawn .draw-path {
+    .bgm-playing .eq-bar-1 {
+      animation: eqPulse 0.7s ease-in-out infinite alternate;
+    }
+    .bgm-playing .eq-bar-2 {
+      animation: eqPulse 0.5s ease-in-out 0.15s infinite alternate;
+    }
+    .bgm-playing .eq-bar-3 {
+      animation: eqPulse 0.8s ease-in-out 0.3s infinite alternate;
+    }
+    .bgm-playing .eq-bar-4 {
+      animation: eqPulse 0.6s ease-in-out 0.1s infinite alternate;
+    }
+    @keyframes eqPulse {
+      0% {
+        transform: scaleY(0.28);
+      }
+      100% {
+        transform: scaleY(1);
+      }
+    }
+
+    /* Architectural Vector Map Line Drawing */
+    .map-stroke {
+      stroke-dasharray: 720;
+      stroke-dashoffset: 720;
+      transition: stroke-dashoffset 2.1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .map-drawn .map-stroke {
       stroke-dashoffset: 0;
     }
-    .draw-delay-1 { transition-delay: 0.15s; }
-    .draw-delay-2 { transition-delay: 0.35s; }
-
-    .map-fade-el {
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.7s ease 0.75s, transform 0.7s ease 0.75s;
-    }
-    .map-drawn .map-fade-el {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @keyframes pinRipple {
-      0% { transform: scale(0.8); opacity: 0.85; }
-      100% { transform: scale(2.4); opacity: 0; }
-    }
-    .pin-ripple {
-      transform-origin: center;
-      transform-box: fill-box;
-      animation: pinRipple 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-    }
-
-    /* Minimal Equalizer Bars Animation for Ambient BGM */
-    @keyframes eqDance {
-      0%, 100% { transform: scaleY(0.32); }
-      50% { transform: scaleY(1); }
-    }
-    .eq-bar {
-      transform-origin: bottom;
-      transform: scaleY(0.32);
-      transition: transform 0.3s ease;
-    }
-    .bgm-playing .eq-bar:nth-child(1) { animation: eqDance 0.95s ease-in-out infinite; }
-    .bgm-playing .eq-bar:nth-child(2) { animation: eqDance 0.75s ease-in-out 0.2s infinite; }
-    .bgm-playing .eq-bar:nth-child(3) { animation: eqDance 1.1s ease-in-out 0.1s infinite; }
-    .bgm-playing .eq-bar:nth-child(4) { animation: eqDance 0.85s ease-in-out 0.3s infinite; }
 
     /* Smooth Accordion Drawer */
     .acc-drawer {
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.38s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .acc-drawer.open {
-      max-height: 360px;
-      opacity: 1;
+      grid-template-rows: 1fr;
     }
-
-    .tabular-nums {
-      font-variant-numeric: tabular-nums;
+    .acc-inner {
+      overflow: hidden;
     }
   </style>
 </head>
-<body class="flex justify-center items-center min-h-[100dvh]">
+<body>
+  <!-- Paper Film Grain Overlay -->
+  <div class="paper-grain" aria-hidden="true"></div>
+  <div id="darkroomWash" aria-hidden="true"></div>
+
+  <!-- Interactive Touch Loupe -->
+  <div id="touchLoupe" aria-hidden="true"></div>
 
   <!-- =================================================================
-       1. CINEMATIC BLACK CURTAIN PRELOADER (S & Y Monogram + 000% -> 100%)
+       1. CINEMATIC SPLIT-CURTAIN PRELOADER (000% -> 100%)
   ================================================================== -->
   <div id="preloaderOverlay" aria-hidden="true">
     <div class="curtain-panel curtain-top"></div>
     <div class="curtain-panel curtain-bottom"></div>
-    <div id="preloaderCenter" class="text-center text-purewhite select-none">
-      <div class="font-editorial italic text-[38px] tracking-[0.14em] font-normal">
-        S <span class="text-[24px] text-white/60 mx-1">&amp;</span> Y
+    <div id="preloaderContent" class="flex flex-col items-center text-purewhite">
+      <span class="font-editorial italic text-[28px] tracking-[0.14em]">S &amp; Y</span>
+      <div class="w-32 h-[1px] bg-white/20 mt-4 overflow-hidden">
+        <div id="preloaderLine" class="h-full bg-purewhite w-0 transition-all duration-100"></div>
       </div>
-      <div class="mt-4 flex flex-col items-center gap-2">
-        <div class="w-28 h-[0.5px] bg-white/20 overflow-hidden">
-          <div id="preloaderLine" class="h-full bg-purewhite w-0 transition-[width] duration-75"></div>
-        </div>
-        <span id="preloaderPercent" class="font-editorial text-[12px] tracking-[0.28em] text-white/75 tabular-nums">
-          000%
-        </span>
-      </div>
+      <span id="preloaderPercent" class="font-editorial text-[12px] tracking-[0.26em] text-white/65 mt-2.5">
+        000%
+      </span>
     </div>
   </div>
 
-  <!-- Centered 480px Exhibition Catalog Mobile Frame -->
-  <div class="relative w-full max-w-[480px] h-[100dvh] bg-purewhite shadow-[0_0_90px_rgba(0,0,0,0.95)] overflow-hidden border-x border-neutral-800">
+  <!-- =================================================================
+       2. FIXED KINETIC MASTHEAD & PINNED HEADER
+  ================================================================== -->
+  <header id="stickyNavHeader" aria-hidden="true"></header>
 
-    <!-- 3. Fine Paper Film Grain (3%) & 0.5px Architectural Hairline Grid -->
-    <div class="film-grain" aria-hidden="true"></div>
-    <div class="arch-grid-lines" aria-hidden="true"></div>
-    <div id="darkroomWash" aria-hidden="true"></div>
+  <h1 id="kineticMasthead" class="font-editorial font-normal uppercase">
+    DAEHEE &amp; YOOJEONG
+  </h1>
 
-    <!-- Interactive Touch Loupe Lens -->
-    <div id="touchLoupe" aria-hidden="true"></div>
+  <!-- Ambient Piano BGM Toggle Button (Top Right) -->
+  <button
+    id="bgmToggleBtn"
+    type="button"
+    onclick="toggleAmbientBGM()"
+    aria-label="배경음악 켜기/끄기"
+    class="fixed top-3.5 right-4 sm:right-[calc(50%-224px)] z-40 flex items-center gap-2 px-3 py-1.5 rounded-full bg-purewhite/85 backdrop-blur-md text-pureblack border border-black/10 shadow-sm active:scale-95 transition-transform"
+  >
+    <span class="flex items-end gap-[2px] h-2.5">
+      <span class="eq-bar eq-bar-1" style="transform: scaleY(0.45)"></span>
+      <span class="eq-bar eq-bar-2" style="transform: scaleY(0.85)"></span>
+      <span class="eq-bar eq-bar-3" style="transform: scaleY(0.35)"></span>
+      <span class="eq-bar eq-bar-4" style="transform: scaleY(0.65)"></span>
+    </span>
+    <span class="text-[9.5px] tracking-[0.18em] uppercase font-medium">SOUND</span>
+  </button>
 
-    <!-- Top Thin Reading Progress Bar -->
-    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] h-[2px] bg-transparent z-50 pointer-events-none">
-      <div id="globalProgressBar" class="h-full bg-purewhite mix-blend-difference w-0 transition-[width] duration-75"></div>
-    </div>
+  <!-- Global Top Reading Progress Hairline -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] h-[2px] z-40 pointer-events-none bg-transparent">
+    <div id="globalProgressBar" class="h-full bg-pureblack w-0 transition-[width] duration-75"></div>
+  </div>
 
-    <!-- 2. Pinned Sticky Top Navigation Bar & Kinetic Scaling Masthead -->
-    <header id="stickyNavHeader" aria-hidden="true"></header>
-    <div
-      id="kineticMasthead"
-      class="font-editorial tracking-[0.03em] text-purewhite select-none text-center"
-      style="top: 108px; font-size: clamp(25px, 6.6vw, 34px); transform: translate3d(-50%, 0, 0) scale(1);"
-    >
-      DAEHEE <span class="italic font-normal opacity-80">&amp;</span> YOOJEONG
-    </div>
+  <!-- =================================================================
+       MAIN APP SCROLL CONTAINER (Max 480px Centered Editorial Frame)
+  ================================================================== -->
+  <main id="appScroll" class="relative w-full max-w-[480px] mx-auto bg-purewhite shadow-[0_0_60px_rgba(0,0,0,0.06)]">
 
-    <!-- Floating Minimal Ambient BGM Toggle (Top-Right, Muted by Default) -->
-    <button
-      id="bgmToggleBtn"
-      type="button"
-      onclick="toggleAmbientBGM()"
-      aria-label="배경음악 켜기/끄기"
-      class="fixed top-2.5 right-6 sm:right-[calc(50%-216px)] z-45 w-9 h-9 rounded-full bg-black/55 hover:bg-black/85 backdrop-blur-md border border-white/25 flex items-center justify-center gap-[2.5px] transition-all duration-300"
-    >
-      <span class="eq-bar w-[1.5px] h-3 bg-purewhite rounded-full"></span>
-      <span class="eq-bar w-[1.5px] h-3 bg-purewhite rounded-full"></span>
-      <span class="eq-bar w-[1.5px] h-3 bg-purewhite rounded-full"></span>
-      <span class="eq-bar w-[1.5px] h-3 bg-purewhite rounded-full"></span>
-    </button>
+    <!-- ===============================================================
+         HERO COVER SECTION (135dvh Kinetic Stage + Gyroscope Parallax)
+    ================================================================ -->
+    <section id="heroTrack" class="relative h-[135dvh] bg-pureblack">
+      <div class="sticky top-0 h-[100dvh] w-full overflow-hidden">
+        <!-- Main Cover Portrait -->
+        <img
+          id="heroImg"
+          src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1400&q=90"
+          alt="서대희 ♥ 박유정 메인 화보"
+          style="transform: scale(1.16);"
+          class="editorial-photo w-full h-full object-cover object-center transition-transform duration-150 ease-out"
+        />
 
-    <!-- Floating Darkroom Develop Toggle (Bottom-Right: B&W <-> Original Color) -->
-    <button
-      id="darkroomToggleBtn"
-      type="button"
-      onclick="toggleDarkroomColor()"
-      aria-label="흑백/컬러 화보 전환"
-      class="fixed bottom-5 right-5 sm:right-[calc(50%-220px)] z-45 px-3.5 py-2 rounded-full bg-black/75 hover:bg-black text-purewhite backdrop-blur-md border border-white/25 flex items-center gap-2 text-[10px] tracking-[0.16em] uppercase shadow-xl transition-all duration-300"
-    >
-      <span id="darkroomDot" class="w-2 h-2 rounded-full bg-white/60 transition-colors"></span>
-      <span id="darkroomLabel">B&amp;W</span>
-    </button>
+        <!-- Subtle Editorial Vignette -->
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-black/15 to-black/75"></div>
 
-    <!-- Main Vertical Editorial Scroll Viewport -->
-    <div id="appScroll">
+        <!-- Top Date Label -->
+        <div id="heroTopDate" class="absolute top-16 inset-x-0 text-center pointer-events-none">
+          <p class="font-editorial italic text-[13px] tracking-[0.26em] text-white/80">
+            2027. 05. 08 · SAT 13:00
+          </p>
+        </div>
 
-      <!-- =================================================================
-           HERO COVER (Full-Bleed Monochrome Portrait + Kinetic Masthead)
-           * 실제 메인 커버 사진 파일로 교체 시 아래 img의 src만 수정하세요 (예: src="cover.jpg")
-      ================================================================== -->
-      <section id="heroTrack" class="relative h-[145dvh] bg-pureblack">
-        <div class="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-between text-purewhite">
-          
-          <!-- Full-Bleed Monochrome Portrait -->
-          <div class="absolute inset-0 overflow-hidden">
-            <img
-              id="heroImg"
-              src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1100&q=85"
-              onerror="this.src='https://placehold.co/900x1600/000000/FFFFFF?text=SEO+DAEHEE+%26+PARK+YOOJEONG'"
-              alt="서대희 & 박유정 메인 화보"
-              class="w-full h-full object-cover object-center grayscale contrast-[1.16]"
-            />
-            <div class="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/80"></div>
-          </div>
-
-          <!-- Top Minimal Date Stamp -->
-          <div id="heroTopDate" class="gpu-layer relative z-10 px-8 pt-4">
-            <span class="font-editorial italic text-[14px] tracking-[0.22em] text-white/85">
-              2027. 05. 08
-            </span>
-          </div>
-
-          <!-- Bottom Editorial Subtitle & Wedding Time -->
-          <div id="heroBottomMeta" class="gpu-layer relative z-10 px-8 pb-11">
-            <p class="font-editorial italic text-[20px] tracking-[0.06em] text-white/90 mb-3">
+        <!-- Bottom Couple & Venue Meta + MONO/COLOR Glass Switch -->
+        <div id="heroBottomMeta" class="absolute bottom-11 inset-x-7 flex items-end justify-between text-purewhite">
+          <div>
+            <p class="font-editorial italic text-[15px] tracking-[0.16em] text-white/80">
               Seo Daehee &amp; Park Yoojeong
             </p>
-            <div class="pt-4 border-t border-white/25 flex items-center justify-between text-[12px] text-white/85">
-              <span class="font-serifKr tracking-[0.06em]">서대희 · 박유정 결혼합니다</span>
-              <span class="font-editorial italic text-[14px] tracking-[0.12em]">1:00 PM</span>
-            </div>
+            <p class="font-serifkr text-[19px] font-light tracking-[0.12em] mt-1">
+              서대희 · 박유정
+            </p>
+            <p class="text-[11.5px] tracking-[0.06em] text-white/70 mt-2">
+              제이아트컨벤션 1층 아모르홀
+            </p>
           </div>
-        </div>
-      </section>
 
-      <!-- Architectural Hairline Divider with Corner Crosshairs -->
-      <div class="crosshair-divider" aria-hidden="true"></div>
-
-      <!-- =================================================================
-           4. SCROLL-SCRUBBED WORD HIGHLIGHT, SIGNATURE & FAMILY LINEAGE
-      ================================================================== -->
-      <section id="storySection" class="bg-purewhite text-pureblack px-9 pt-28 pb-24">
-        <div class="max-w-[330px] mx-auto text-center">
-          <p class="font-editorial italic text-[19px] text-mutedgray mb-9">
-            “Two lives, one quiet rhythm.”
-          </p>
-
-          <!-- Scroll-Scrubbed Word-by-Word Illuminating Invitation Verse -->
-          <div
-            id="scrubParagraph"
-            class="font-serifKr text-[17px] sm:text-[18px] leading-[2.45] font-normal tracking-[0.01em] break-keep"
+          <button
+            type="button"
+            onclick="toggleDarkroomColor()"
+            class="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-purewhite active:scale-95 transition-transform"
           >
-            서로의 계절이 되어주기로 약속한 날,<br />
-            가장 고요하고 빛나는 순간에<br />
-            소중한 분들을 초대합니다.
-          </div>
-
-          <!-- Live Fountain-Pen Handwriting Signature SVG ('Daehee & Yoojeong') -->
-          <div id="signatureBox" class="mt-11 flex justify-center">
-            <svg viewBox="0 0 280 74" class="w-52 h-auto overflow-visible" aria-label="Daehee and Yoojeong Signature">
-              <path
-                class="sig-stroke"
-                d="M22 38 C24 14, 48 10, 46 34 C44 48, 22 46, 26 32 C34 26, 54 34, 62 28 C68 23, 60 38, 70 35 C78 32, 86 22, 92 32 C96 38, 108 14, 112 34 C114 40, 124 26, 132 32 C140 37, 152 24, 158 32 C164 38, 178 24, 172 18 C166 14, 162 36, 176 38 C184 39, 192 31, 198 28"
-                fill="none"
-                stroke="#000000"
-                stroke-width="1.15"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                class="sig-stroke-sub"
-                d="M96 50 C102 60, 112 58, 118 48 C114 66, 102 72, 98 66 C108 58, 124 56, 132 58 C138 60, 144 54, 150 58 C156 61, 164 52, 168 62 C170 68, 160 72, 158 66 C164 58, 176 56, 184 58 C192 60, 200 54, 208 58 C216 61, 226 53, 234 59 C240 64, 248 58, 256 56"
-                fill="none"
-                stroke="#000000"
-                stroke-width="1.1"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-
-          <!-- Family Lineage & Hosts Contact Sheet Trigger -->
-          <div class="mt-10 pt-8 border-t border-hairline">
-            <div class="space-y-2.5 font-serifKr text-[15px] tracking-[0.06em] text-pureblack">
-              <p>
-                <span class="font-medium">서영삼 · 윤성숙</span>
-                <span class="text-[12.5px] text-mutedgray mx-1.5">의 장남</span>
-                <span class="font-medium">대희</span>
-              </p>
-              <p>
-                <span class="font-medium">박현철 · 조현주</span>
-                <span class="text-[12.5px] text-mutedgray mx-1.5">의 차녀</span>
-                <span class="font-medium">유정</span>
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onclick="openHostsModal()"
-              class="mt-7 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-applegray hover:bg-pureblack hover:text-purewhite text-[11.5px] tracking-[0.06em] text-pureblack transition-colors duration-300"
-            >
-              <span>혼주 연락처 보기</span>
-              <span class="text-[10px]">↗</span>
-            </button>
-          </div>
+            <span class="darkroom-dot w-1.5 h-1.5 rounded-full bg-white/60"></span>
+            <span class="darkroom-label font-editorial text-[10.5px] tracking-[0.18em] uppercase">MONO</span>
+          </button>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Architectural Hairline Divider with Corner Crosshairs -->
-      <div class="crosshair-divider" aria-hidden="true"></div>
+    <!-- ===============================================================
+         SECTION 1: INVITATION STORY (Word-by-Word Scrub + Live Signature)
+    ================================================================ -->
+    <section id="storySection" class="editorial-layer px-7 pt-24 pb-20 text-center border-b border-hairline">
+      <p class="font-editorial italic text-[15px] tracking-[0.22em] text-mutedgray mb-7">
+        Invitation
+      </p>
 
-      <!-- =================================================================
-           5 & 6. EDITORIAL SHUTTER REVEAL, DUAL-SPEED PARALLAX & DUAL MARQUEE
-           * 실제 스냅 사진 교체 시 각 img의 src를 photo1.jpg ~ photo5.jpg로 바꾸세요.
-      ================================================================== -->
-      <section id="lookbookSection" class="bg-purewhite text-pureblack pt-14 pb-24 overflow-hidden">
-        
-        <!-- Frame 01: Full-Bleed Accordion Shutter Portrait -->
-        <figure class="mb-14 cursor-pointer group" onclick="openLightbox(0)">
-          <div class="shutter-frame w-full aspect-[4/5] bg-applegray loupe-target">
-            <img
-              src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85"
-              onerror="this.src='https://placehold.co/800x1000/141414/FFFFFF?text=PORTRAIT+01'"
-              alt="웨딩 화보 1"
-              class="shutter-photo w-full h-full object-cover"
-            />
-          </div>
-        </figure>
+      <p id="scrubParagraph" class="font-serifkr text-[15.5px] leading-[2.25] font-light tracking-[-0.01em] break-keep">
+        서로 다른 계절을 걸어온 두 사람이<br />
+        이제 같은 빛 아래 나란히 서려 합니다.<br /><br />
+        오월의 맑은 햇살처럼<br />
+        다정하고 단단한 마음으로 살아가겠습니다.<br /><br />
+        귀한 걸음으로 함께해 주시면<br />
+        더없는 기쁨으로 간직하겠습니다.
+      </p>
 
-        <!-- Frame 02 & 03: Dual-Speed Contrasting Vertical Parallax 2-Column Spread -->
-        <div id="dualGrid" class="px-8 grid grid-cols-2 gap-4 items-start mb-16">
-          <figure id="dualColLeft" class="dual-col-left cursor-pointer group" onclick="openLightbox(1)">
-            <div class="shutter-frame w-full aspect-[3/4] rounded-xl bg-applegray loupe-target">
-              <img
-                src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=85"
-                onerror="this.src='https://placehold.co/600x800/141414/FFFFFF?text=PORTRAIT+02'"
-                alt="웨딩 화보 2"
-                class="shutter-photo w-full h-full object-cover"
-              />
-            </div>
-            <figcaption class="mt-2.5 font-editorial italic text-[13px] text-mutedgray">
-              Stillness in light
-            </figcaption>
-          </figure>
+      <!-- Fountain Pen Live Ink Signature -->
+      <div id="signatureBox" class="mt-11 flex flex-col items-center">
+        <svg viewBox="0 0 260 64" class="w-48 h-auto text-pureblack" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Daehee & Yoojeong Signature">
+          <path
+            class="sig-path"
+            d="M22 44 C34 14, 54 12, 48 40 C44 54, 66 28, 78 34 C88 39, 96 24, 108 36 C116 44, 128 22, 140 36 C152 48, 166 16, 178 38 C186 50, 204 26, 218 35 C228 41, 238 30, 244 33"
+            stroke="currentColor"
+            stroke-width="1.35"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
 
-          <!-- Contrasting Speed Right Column -->
-          <figure id="dualColRight" class="dual-col-right mt-14 cursor-pointer group" onclick="openLightbox(2)">
-            <div class="shutter-frame w-full aspect-[3/4] rounded-xl bg-applegray loupe-target">
-              <img
-                src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=800&q=85"
-                onerror="this.src='https://placehold.co/600x800/141414/FFFFFF?text=PORTRAIT+03'"
-                alt="웨딩 화보 3"
-                class="shutter-photo w-full h-full object-cover"
-              />
-            </div>
-            <figcaption class="mt-2.5 text-right font-editorial italic text-[13px] text-mutedgray">
-              May afternoon
-            </figcaption>
-          </figure>
+      <!-- Hosts & Couple Family Relationship -->
+      <div class="mt-10 pt-9 border-t border-hairline space-y-2.5 text-[14px] text-charcoal">
+        <p>
+          <strong class="font-semibold text-pureblack">서영삼 · 윤성숙</strong>
+          <span class="text-mutedgray mx-1.5">의 장남</span>
+          <strong class="font-semibold text-pureblack">대희</strong>
+        </p>
+        <p>
+          <strong class="font-semibold text-pureblack">박현철 · 조현주</strong>
+          <span class="text-mutedgray mx-1.5">의 차녀</span>
+          <strong class="font-semibold text-pureblack">유정</strong>
+        </p>
+      </div>
+
+      <div class="mt-8">
+        <button
+          type="button"
+          onclick="openHostsModal()"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-pureblack text-[11.5px] tracking-[0.14em] uppercase text-pureblack hover:bg-pureblack hover:text-purewhite active:scale-95 transition-all"
+        >
+          <span>혼주에게 연락하기</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         SECTION 2: EDITORIAL LOOKBOOK GALLERY (Clean Reveal + Dual Parallax)
+    ================================================================ -->
+    <section class="editorial-layer-elevated px-5 pt-20 pb-16">
+      <div class="px-1 mb-8">
+        <span class="font-editorial italic text-[14px] tracking-[0.18em] text-mutedgray block">Lookbook</span>
+        <h2 class="font-editorial text-[26px] tracking-[0.06em] text-pureblack mt-0.5">THE ARCHIVE</h2>
+      </div>
+
+      <!-- Spread 1: Full-Bleed Portrait with MONO/COLOR Switch -->
+      <figure class="mb-12">
+        <div
+          onclick="openLightbox(0)"
+          class="shutter-frame loupe-target relative w-full aspect-[3/4] rounded-2xl cursor-pointer"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=90"
+            alt="웨딩 화보 1"
+            class="editorial-photo shutter-img w-full h-full object-cover"
+          />
+          <button
+            type="button"
+            onclick="event.stopPropagation(); toggleDarkroomColor();"
+            class="absolute bottom-3.5 right-3.5 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-md border border-white/25 text-purewhite active:scale-95 transition-transform"
+          >
+            <span class="darkroom-dot w-1.5 h-1.5 rounded-full bg-white/60"></span>
+            <span class="darkroom-label font-editorial text-[10px] tracking-[0.18em] uppercase">MONO</span>
+          </button>
         </div>
+        <figcaption class="mt-3 px-1 flex items-center justify-between text-[11.5px] text-mutedgray">
+          <span class="type-caption font-editorial italic tracking-[0.1em]" data-caption="Chapter I — Stillness in May"></span>
+          <span class="text-[10px] tracking-[0.12em] uppercase">TAP TO EXPAND</span>
+        </figcaption>
+      </figure>
 
-        <!-- Frame 04: Wide Cinema Ratio Shutter Frame -->
-        <figure class="px-8 mb-14 cursor-pointer group" onclick="openLightbox(3)">
-          <div class="shutter-frame w-full aspect-[16/10] rounded-2xl bg-applegray loupe-target">
+      <!-- Spread 2 & 3: Dual-Speed Contrasting 2-Column Editorial Spread -->
+      <div id="dualGrid" class="grid grid-cols-2 gap-3.5 mb-12 items-start">
+        <figure id="dualColLeft" class="will-change-transform">
+          <div
+            onclick="openLightbox(1)"
+            class="shutter-frame loupe-target relative w-full aspect-[3/4.2] rounded-2xl cursor-pointer"
+          >
             <img
-              src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1000&q=85"
-              onerror="this.src='https://placehold.co/1000x625/141414/FFFFFF?text=CINEMA+FRAME'"
-              alt="웨딩 화보 4"
-              class="shutter-photo w-full h-full object-cover"
+              src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=900&q=90"
+              alt="웨딩 화보 2"
+              class="editorial-photo shutter-img w-full h-full object-cover"
             />
           </div>
-        </figure>
-
-        <!-- Frame 05: Centered Editorial Portrait -->
-        <figure class="px-14 mb-16 cursor-pointer group" onclick="openLightbox(4)">
-          <div class="shutter-frame w-full aspect-[3/4] rounded-2xl bg-applegray loupe-target">
-            <img
-              src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=900&q=85"
-              onerror="this.src='https://placehold.co/600x800/141414/FFFFFF?text=PORTRAIT+05'"
-              alt="웨딩 화보 5"
-              class="shutter-photo w-full h-full object-cover"
-            />
-          </div>
-          <figcaption class="mt-3.5 text-center text-[11px] text-mutedgray tracking-[0.04em]">
-            화보 위를 길게 누르면 돋보기로 확대됩니다
+          <figcaption class="mt-2.5 px-0.5">
+            <span class="type-caption font-editorial italic text-[11.5px] tracking-[0.08em] text-mutedgray" data-caption="Chapter II — Gaze"></span>
           </figcaption>
         </figure>
 
-        <!-- 6. Dual-Track Reverse 35mm Film Strip Marquee & Kinetic Background Watermark -->
-        <div id="marqueeShowcase" class="relative py-8 bg-pureblack overflow-hidden border-y border-neutral-800 select-none">
-          
-          <!-- Oversized Lateral Kinetic Watermark -->
+        <figure id="dualColRight" class="mt-10 will-change-transform">
           <div
-            id="kineticWatermark"
-            aria-hidden="true"
-            class="pointer-events-none absolute inset-0 flex items-center justify-center whitespace-nowrap font-editorial italic text-[68px] tracking-[0.08em] text-white/[0.08] will-change-transform"
+            onclick="openLightbox(2)"
+            class="shutter-frame loupe-target relative w-full aspect-[3/4.2] rounded-2xl cursor-pointer"
           >
-            SEO DAEHEE · PARK YOOJEONG · SEO DAEHEE · PARK YOOJEONG
+            <img
+              src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=900&q=90"
+              alt="웨딩 화보 3"
+              class="editorial-photo shutter-img w-full h-full object-cover"
+            />
           </div>
+          <figcaption class="mt-2.5 px-0.5">
+            <span class="type-caption font-editorial italic text-[11.5px] tracking-[0.08em] text-mutedgray" data-caption="Chapter III — Whisper"></span>
+          </figcaption>
+        </figure>
+      </div>
 
-          <div class="h-2.5 w-full film-sprockets mb-2.5 relative z-10"></div>
+      <!-- Spread 4: Wide Cinema Ratio Frame -->
+      <figure class="mb-6">
+        <div
+          onclick="openLightbox(3)"
+          class="shutter-frame loupe-target relative w-full aspect-[16/10] rounded-2xl cursor-pointer"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&q=90"
+            alt="웨딩 화보 4"
+            class="editorial-photo shutter-img w-full h-full object-cover"
+          />
+        </div>
+        <figcaption class="mt-3 px-1 flex items-center justify-between text-[11.5px] text-mutedgray">
+          <span class="type-caption font-editorial italic tracking-[0.1em]" data-caption="Chapter IV — Promise"></span>
+          <span class="text-[10px] tracking-[0.12em] uppercase">HOLD TO ZOOM</span>
+        </figcaption>
+      </figure>
+    </section>
 
-          <!-- Top Film Track (Moves Left) -->
-          <div class="film-track-left gap-3 px-2 relative z-10">
-            <div onclick="openLightbox(0)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=75" alt="필름 컷 1" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(1)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=75" alt="필름 컷 2" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(2)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=400&q=75" alt="필름 컷 3" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(3)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=400&q=75" alt="필름 컷 4" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(4)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=75" alt="필름 컷 5" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <!-- Duplicate Set -->
-            <div onclick="openLightbox(0)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=75" alt="필름 컷 1" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(1)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=75" alt="필름 컷 2" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(2)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=400&q=75" alt="필름 컷 3" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(3)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=400&q=75" alt="필름 컷 4" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(4)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=75" alt="필름 컷 5" class="film-strip-img w-full h-full object-cover" />
-            </div>
-          </div>
+    <!-- ===============================================================
+         SECTION 3: DUAL-TRACK REVERSE FILM STRIP & KINETIC WATERMARK
+    ================================================================ -->
+    <section id="marqueeShowcase" class="editorial-layer relative py-14 overflow-hidden bg-offwhite border-y border-hairline">
+      <!-- Oversized Lateral Kinetic Background Typography -->
+      <div
+        id="kineticWatermark"
+        aria-hidden="true"
+        class="pointer-events-none select-none whitespace-nowrap font-editorial italic text-[56px] tracking-[0.08em] text-black/[0.045] mb-4 will-change-transform"
+      >
+        SEO DAEHEE · PARK YOOJEONG · 2027.05.08 · AMOUR HALL ·
+      </div>
 
-          <div class="h-2.5 w-full film-sprockets my-2.5 relative z-10"></div>
+      <!-- Track 1: Forward Film Strip -->
+      <div class="overflow-hidden mb-3">
+        <div class="film-track-forward gap-3 px-1.5">
+          <img onclick="openLightbox(0)" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="필름 1" class="editorial-photo w-36 h-48 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(1)" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="필름 2" class="editorial-photo w-36 h-48 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(2)" src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=600&q=80" alt="필름 3" class="editorial-photo w-36 h-48 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(3)" src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=600&q=80" alt="필름 4" class="editorial-photo w-36 h-48 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(4)" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80" alt="필름 5" class="editorial-photo w-36 h-48 object-cover rounded-xl cursor-pointer" />
+          <!-- Seamless Duplicate Set -->
+          <img onclick="openLightbox(0)" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="필름 1" class="editorial-photo w-36 h-48 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(1)" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="필름 2" class="editorial-photo w-36 h-48 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(2)" src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=600&q=80" alt="필름 3" class="editorial-photo w-36 h-48 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(3)" src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=600&q=80" alt="필름 4" class="editorial-photo w-36 h-48 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(4)" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80" alt="필름 5" class="editorial-photo w-36 h-48 object-cover rounded-xl cursor-pointer" />
+        </div>
+      </div>
 
-          <!-- Bottom Film Track (Moves Right in Reverse) -->
-          <div class="film-track-right gap-3 px-2 relative z-10">
-            <div onclick="openLightbox(4)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=75" alt="필름 컷 5" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(3)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=400&q=75" alt="필름 컷 4" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(2)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=400&q=75" alt="필름 컷 3" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(1)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=75" alt="필름 컷 2" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(0)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=75" alt="필름 컷 1" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <!-- Duplicate Set -->
-            <div onclick="openLightbox(4)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=75" alt="필름 컷 5" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(3)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=400&q=75" alt="필름 컷 4" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(2)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=400&q=75" alt="필름 컷 3" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(1)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=75" alt="필름 컷 2" class="film-strip-img w-full h-full object-cover" />
-            </div>
-            <div onclick="openLightbox(0)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=75" alt="필름 컷 1" class="film-strip-img w-full h-full object-cover" />
-            </div>
-          </div>
+      <!-- Track 2: Reverse Film Strip -->
+      <div class="overflow-hidden">
+        <div class="film-track-reverse gap-3 px-1.5">
+          <img onclick="openLightbox(4)" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80" alt="필름 5" class="editorial-photo w-44 h-32 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(3)" src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=600&q=80" alt="필름 4" class="editorial-photo w-44 h-32 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(2)" src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=600&q=80" alt="필름 3" class="editorial-photo w-44 h-32 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(1)" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="필름 2" class="editorial-photo w-44 h-32 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(0)" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="필름 1" class="editorial-photo w-44 h-32 object-cover rounded-xl cursor-pointer" />
+          <!-- Seamless Duplicate Set -->
+          <img onclick="openLightbox(4)" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80" alt="필름 5" class="editorial-photo w-44 h-32 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(3)" src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=600&q=80" alt="필름 4" class="editorial-photo w-44 h-32 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(2)" src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=600&q=80" alt="필름 3" class="editorial-photo w-44 h-32 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(1)" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="필름 2" class="editorial-photo w-44 h-32 object-cover rounded-xl cursor-pointer" />
+          <img onclick="openLightbox(0)" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="필름 1" class="editorial-photo w-44 h-32 object-cover rounded-xl cursor-pointer" />
+        </div>
+      </div>
+    </section>
 
-          <div class="h-2.5 w-full film-sprockets mt-2.5 relative z-10"></div>
+    <!-- ===============================================================
+         SECTION 4: 2027. 05. 08 CALENDAR & MECHANICAL SPLIT-FLAP COUNTDOWN
+    ================================================================ -->
+    <section class="editorial-layer-elevated px-6 py-20 text-center">
+      <p class="font-editorial italic text-[15px] tracking-[0.2em] text-mutedgray">Date &amp; Time</p>
+      <h2 class="font-editorial text-[32px] tracking-[0.08em] text-pureblack mt-1">2027. 05. 08</h2>
+      <p class="text-[13.5px] text-charcoal mt-1.5">토요일 오후 1시 (13:00)</p>
+
+      <!-- 3D Tilt Glass Calendar Card (May 2027 — May 1 is Saturday) -->
+      <div class="tilt-card mt-9 p-6 rounded-3xl bg-applegray/85 border border-hairline shadow-sm">
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-hairline">
+          <span class="font-editorial italic text-[17px] text-pureblack">May 2027</span>
+          <span class="text-[11px] tracking-[0.14em] uppercase text-mutedgray">SAT · 13:00</span>
         </div>
 
-      </section>
+        <div class="grid grid-cols-7 gap-y-3 text-[12px]">
+          <span class="text-mutedgray font-medium">SUN</span>
+          <span class="text-mutedgray font-medium">MON</span>
+          <span class="text-mutedgray font-medium">TUE</span>
+          <span class="text-mutedgray font-medium">WED</span>
+          <span class="text-mutedgray font-medium">THU</span>
+          <span class="text-mutedgray font-medium">FRI</span>
+          <span class="text-pureblack font-semibold">SAT</span>
 
-      <!-- Architectural Hairline Divider with Corner Crosshairs -->
-      <div class="crosshair-divider" aria-hidden="true"></div>
+          <!-- Week 1 (May 1 = Sat) -->
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+          <span class="py-1.5 text-charcoal">1</span>
 
-      <!-- =================================================================
-           7. EDITORIAL CALENDAR & MECHANICAL FLIP COUNTDOWN
-      ================================================================== -->
-      <section class="bg-applegray text-pureblack px-8 py-24">
-        <div class="max-w-[350px] mx-auto">
-          
-          <div class="text-center">
-            <p class="font-editorial italic text-[17px] text-mutedgray">Saturday, May 8 · 13:00</p>
-            <h2 class="font-editorial text-[50px] sm:text-[56px] leading-none tracking-[-0.01em] text-pureblack mt-1">
-              2027.05.08
-            </h2>
-            <p class="font-serifKr text-[14px] text-charcoal tracking-[0.08em] mt-3">
-              2027년 5월 8일 토요일 오후 1시
-            </p>
-          </div>
+          <!-- Week 2 (May 8 = Wedding Day) -->
+          <span class="py-1.5 text-mutedgray">2</span>
+          <span class="py-1.5 text-charcoal">3</span>
+          <span class="py-1.5 text-charcoal">4</span>
+          <span class="py-1.5 text-charcoal">5</span>
+          <span class="py-1.5 text-charcoal">6</span>
+          <span class="py-1.5 text-charcoal">7</span>
+          <span class="mx-auto w-8 h-8 rounded-full bg-pureblack text-purewhite font-semibold flex items-center justify-center shadow-md">
+            8
+          </span>
 
-          <!-- 3D Perspective Tilt + Specular Glare Monochrome Calendar Card -->
-          <div class="tilt-card mt-9 rounded-3xl bg-purewhite border border-hairline p-6 shadow-[0_14px_34px_rgba(0,0,0,0.04)]">
-            <div class="tilt-glare"></div>
-            <div class="grid grid-cols-7 text-center text-[10px] tracking-[0.18em] uppercase text-mutedgray pb-3 border-b border-hairline">
-              <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span class="text-pureblack font-semibold">S</span>
-            </div>
-            <div class="grid grid-cols-7 text-center text-[13.5px] font-editorial gap-y-2.5 pt-3.5 text-neutral-700">
-              <span></span><span></span><span></span><span></span><span></span><span></span><span>1</span>
-              <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
-              <!-- May 8 Highlight -->
-              <span class="flex items-center justify-center">
-                <span class="w-7 h-7 rounded-full bg-pureblack text-purewhite font-semibold flex items-center justify-center text-[12px]">
-                  8
-                </span>
-              </span>
-              <span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span>
-              <span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span>
-              <span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span>
-              <span>30</span><span>31</span><span></span><span></span><span></span><span></span><span></span>
-            </div>
-          </div>
+          <!-- Week 3 -->
+          <span class="py-1.5 text-mutedgray">9</span>
+          <span class="py-1.5 text-charcoal">10</span>
+          <span class="py-1.5 text-charcoal">11</span>
+          <span class="py-1.5 text-charcoal">12</span>
+          <span class="py-1.5 text-charcoal">13</span>
+          <span class="py-1.5 text-charcoal">14</span>
+          <span class="py-1.5 text-charcoal">15</span>
 
-          <!-- Mechanical Split-Flap / Flip Countdown -->
-          <div class="mt-8 grid grid-cols-4 gap-2.5 text-center tabular-nums">
-            <div class="flip-box">
-              <span id="cdDays" class="font-editorial text-[26px] leading-none">000</span>
-              <span class="block mt-1.5 text-[8.5px] tracking-[0.2em] uppercase text-white/65">DAYS</span>
-            </div>
-            <div class="flip-box">
-              <span id="cdHours" class="font-editorial text-[26px] leading-none">00</span>
-              <span class="block mt-1.5 text-[8.5px] tracking-[0.2em] uppercase text-white/65">HRS</span>
-            </div>
-            <div class="flip-box">
-              <span id="cdMins" class="font-editorial text-[26px] leading-none">00</span>
-              <span class="block mt-1.5 text-[8.5px] tracking-[0.2em] uppercase text-white/65">MIN</span>
-            </div>
-            <div class="flip-box">
-              <span id="cdSecs" class="font-editorial text-[26px] leading-none">00</span>
-              <span class="block mt-1.5 text-[8.5px] tracking-[0.2em] uppercase text-white/65">SEC</span>
-            </div>
-          </div>
+          <!-- Week 4 -->
+          <span class="py-1.5 text-mutedgray">16</span>
+          <span class="py-1.5 text-charcoal">17</span>
+          <span class="py-1.5 text-charcoal">18</span>
+          <span class="py-1.5 text-charcoal">19</span>
+          <span class="py-1.5 text-charcoal">20</span>
+          <span class="py-1.5 text-charcoal">21</span>
+          <span class="py-1.5 text-charcoal">22</span>
 
-          <!-- One-Click Calendar (.ics) Save Button -->
-          <div class="mt-8 text-center">
-            <button
-              type="button"
-              onclick="downloadWeddingICS()"
-              class="w-full py-3.5 rounded-full bg-purewhite hover:bg-pureblack hover:text-purewhite border border-hairline text-[12px] font-medium tracking-[0.04em] text-pureblack transition-colors duration-300"
-            >
-              캘린더에 일정 저장하기
-            </button>
-          </div>
+          <!-- Week 5 -->
+          <span class="py-1.5 text-mutedgray">23</span>
+          <span class="py-1.5 text-charcoal">24</span>
+          <span class="py-1.5 text-charcoal">25</span>
+          <span class="py-1.5 text-charcoal">26</span>
+          <span class="py-1.5 text-charcoal">27</span>
+          <span class="py-1.5 text-charcoal">28</span>
+          <span class="py-1.5 text-charcoal">29</span>
 
+          <!-- Week 6 -->
+          <span class="py-1.5 text-mutedgray">30</span>
+          <span class="py-1.5 text-charcoal">31</span>
+          <span></span><span></span><span></span><span></span><span></span>
         </div>
-      </section>
+      </div>
 
-      <!-- Architectural Hairline Divider with Corner Crosshairs -->
-      <div class="crosshair-divider" aria-hidden="true"></div>
-
-      <!-- =================================================================
-           LOCATION, ARCHITECTURAL VECTOR MAP & PARKING SUMMARY
-      ================================================================== -->
-      <section class="bg-purewhite text-pureblack px-8 py-24">
-        <div class="max-w-[360px] mx-auto">
-          
-          <div class="text-center mb-7">
-            <p class="font-editorial italic text-[17px] text-mutedgray">Location</p>
-            <h2 class="font-serifKr text-[21px] font-medium tracking-[0.02em] text-pureblack mt-1">
-              제이아트컨벤션 1층 아모르홀
-            </h2>
-            <p class="text-[13px] text-mutedgray mt-2">
-              광주전남통합특별시 서구 풍서좌로 269
-            </p>
-          </div>
-
-          <!-- Self-Drawing Monochrome SVG Architectural Map -->
-          <div id="vectorMapBox" class="rounded-3xl overflow-hidden border border-hairline bg-applegray p-3">
-            <svg viewBox="0 0 400 230" class="w-full h-auto block" role="img" aria-label="제이아트컨벤션 약도">
-              <rect width="400" height="230" fill="#FFFFFF" rx="16" />
-
-              <!-- Architectural Grid Lines -->
-              <path d="M0 55 H400" stroke="#F2F2F7" stroke-width="1.2" class="draw-path" style="--len: 400" />
-              <path d="M0 175 H400" stroke="#F2F2F7" stroke-width="1.2" class="draw-path" style="--len: 400" />
-              <path d="M105 0 V230" stroke="#F2F2F7" stroke-width="1.2" class="draw-path" style="--len: 230" />
-              <path d="M295 0 V230" stroke="#F2F2F7" stroke-width="1.2" class="draw-path" style="--len: 230" />
-
-              <!-- Main Roads -->
-              <path d="M180 0 V230" stroke="#E5E5EA" stroke-width="14" class="draw-path draw-delay-1" style="--len: 230" />
-              <path d="M0 124 H400" stroke="#E5E5EA" stroke-width="12" class="draw-path draw-delay-1" style="--len: 400" />
-
-              <!-- Access Route -->
-              <path d="M88 124 H180 V80 H212" fill="none" stroke="#000000" stroke-width="1.8" stroke-dasharray="4 4" class="draw-path draw-delay-2" style="--len: 170" />
-
-              <!-- Road & Venue Labels -->
-              <g class="map-fade-el">
-                <text x="192" y="28" fill="#6E6E73" font-size="8.5" letter-spacing="1">풍서좌로</text>
-                <text x="20" y="114" fill="#6E6E73" font-size="8.5" letter-spacing="1">회재로 · 서창 방면</text>
-
-                <circle cx="88" cy="124" r="4.5" fill="#6E6E73" />
-                <text x="88" y="143" text-anchor="middle" fill="#141414" font-size="9">풍암지구 방면</text>
-
-                <circle cx="322" cy="124" r="4.5" fill="#141414" />
-                <text x="322" y="143" text-anchor="middle" fill="#141414" font-size="9">유덕IC · 상무 방면</text>
-
-                <!-- Venue Pin -->
-                <circle cx="212" cy="80" r="13" fill="#000000" class="pin-ripple" />
-                <circle cx="212" cy="80" r="5" fill="#000000" />
-                <rect x="224" y="67" width="136" height="25" rx="12.5" fill="#000000" />
-                <text x="292" y="83" text-anchor="middle" fill="#FFFFFF" font-size="8.5" font-weight="500">제이아트컨벤션 1F 아모르홀</text>
-              </g>
-            </svg>
-          </div>
-
-          <!-- One-Tap Address Copy & Parking Info -->
-          <div class="mt-4 rounded-2xl bg-applegray px-4 py-3.5 flex items-center justify-between gap-3">
-            <div class="text-left">
-              <p class="text-[12px] font-medium text-pureblack">서구 풍서좌로 269 · 1층 아모르홀</p>
-              <p class="text-[11px] text-mutedgray mt-0.5">지상·지하 주차장 2시간 무료 주차</p>
-            </div>
-            <button
-              type="button"
-              onclick="copyText('광주전남통합특별시 서구 풍서좌로 269 제이아트컨벤션', '예식장 주소가 복사되었습니다.')"
-              class="shrink-0 px-3.5 py-2 rounded-full bg-purewhite border border-hairline hover:bg-pureblack hover:text-purewhite text-[11px] font-medium text-pureblack transition-colors"
-            >
-              주소 복사
-            </button>
-          </div>
-
-          <!-- Navigation App Links (Naver Map, Kakao Map, TMAP) -->
-          <div class="mt-3 grid grid-cols-3 gap-2">
-            <a
-              href="https://map.naver.com/v5/search/%EC%A0%9C%EC%9D%B4%EC%95%84%ED%8A%B8%EC%BB%A8%EB%B2%A4%EC%85%98%20%EC%84%9C%EA%B5%AC%20%ED%92%8D%EC%84%9C%EC%A2%8C%EB%A1%9C%20269"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="py-3.5 rounded-full bg-applegray hover:bg-pureblack hover:text-purewhite text-center text-[11.5px] font-medium text-pureblack transition-colors"
-            >
-              네이버지도
-            </a>
-            <a
-              href="https://map.kakao.com/link/search/%EC%A0%9C%EC%9D%B4%EC%95%84%ED%8A%B8%EC%BB%A8%EB%B2%A4%EC%85%98"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="py-3.5 rounded-full bg-applegray hover:bg-pureblack hover:text-purewhite text-center text-[11.5px] font-medium text-pureblack transition-colors"
-            >
-              카카오맵
-            </a>
-            <a
-              href="tmap://search?name=%EC%A0%9C%EC%9D%B4%EC%95%84%ED%8A%B8%EC%BB%A8%EB%B2%A4%EC%85%98"
-              onclick="showToast('티맵(TMAP) 길찾기를 연결합니다.')"
-              class="py-3.5 rounded-full bg-applegray hover:bg-pureblack hover:text-purewhite text-center text-[11.5px] font-medium text-pureblack transition-colors"
-            >
-              티맵
-            </a>
-          </div>
-
+      <!-- Mechanical Split-Flap Live Countdown -->
+      <div class="mt-8 grid grid-cols-4 gap-2.5">
+        <div class="py-3.5 px-2 rounded-2xl bg-pureblack text-purewhite shadow-sm">
+          <span id="cdDays" class="flip-digit font-editorial text-[24px] tracking-[0.06em]">000</span>
+          <span class="block text-[9.5px] tracking-[0.18em] uppercase text-white/55 mt-0.5">DAYS</span>
         </div>
-      </section>
+        <div class="py-3.5 px-2 rounded-2xl bg-pureblack text-purewhite shadow-sm">
+          <span id="cdHours" class="flip-digit font-editorial text-[24px] tracking-[0.06em]">00</span>
+          <span class="block text-[9.5px] tracking-[0.18em] uppercase text-white/55 mt-0.5">HOURS</span>
+        </div>
+        <div class="py-3.5 px-2 rounded-2xl bg-pureblack text-purewhite shadow-sm">
+          <span id="cdMins" class="flip-digit font-editorial text-[24px] tracking-[0.06em]">00</span>
+          <span class="block text-[9.5px] tracking-[0.18em] uppercase text-white/55 mt-0.5">MINS</span>
+        </div>
+        <div class="py-3.5 px-2 rounded-2xl bg-pureblack text-purewhite shadow-sm">
+          <span id="cdSecs" class="flip-digit font-editorial text-[24px] tracking-[0.06em]">00</span>
+          <span class="block text-[9.5px] tracking-[0.18em] uppercase text-white/55 mt-0.5">SECS</span>
+        </div>
+      </div>
 
-      <!-- Architectural Hairline Divider with Corner Crosshairs -->
-      <div class="crosshair-divider" aria-hidden="true"></div>
+      <!-- One-Click Calendar (.ics) Save Button -->
+      <div class="mt-7">
+        <button
+          type="button"
+          onclick="downloadWeddingICS()"
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-applegray text-pureblack border border-hairline text-[12px] font-medium tracking-[0.04em] active:scale-95 transition-transform"
+        >
+          <span>캘린더에 일정 저장하기</span>
+        </button>
+      </div>
+    </section>
 
-      <!-- =================================================================
-           ACCOUNT ACCORDIONS (GROOM & BRIDE SIDES) & CLOSING SHARE
-           * 아래 계좌번호를 실제 계좌번호로 수정해 사용하세요.
-      ================================================================== -->
-      <section class="bg-applegray text-pureblack px-8 pt-22 pb-20">
-        <div class="max-w-[360px] mx-auto">
-          
-          <div class="text-center mb-8">
-            <p class="font-editorial italic text-[17px] text-mutedgray">With Gratitude</p>
-            <h2 class="font-serifKr text-[19px] font-medium text-pureblack mt-1">
-              마음 전하실 곳
-            </h2>
-          </div>
+    <!-- ===============================================================
+         SECTION 5: LOCATION (제이아트컨벤션 1층 아모르홀)
+    ================================================================ -->
+    <section class="editorial-layer px-6 py-20 border-t border-hairline">
+      <div class="text-center">
+        <p class="font-editorial italic text-[15px] tracking-[0.2em] text-mutedgray">Location</p>
+        <h2 class="font-serifkr text-[21px] font-medium text-pureblack mt-1.5">
+          제이아트컨벤션 1층 아모르홀
+        </h2>
+        <p class="text-[13px] text-charcoal mt-2">
+          광주전남통합특별시 서구 풍서좌로 269
+        </p>
 
-          <div class="space-y-3">
-            <!-- Groom Side Account Accordion (서대희, 서영삼, 윤성숙) -->
-            <div class="tilt-card rounded-2xl border border-hairline bg-purewhite overflow-hidden">
-              <div class="tilt-glare"></div>
-              <button
-                type="button"
-                onclick="toggleAccordion('groomAcc', this)"
-                class="w-full px-5 py-4 flex items-center justify-between text-[13.5px] font-serifKr font-medium text-pureblack"
-              >
-                <span>신랑측 계좌번호</span>
-                <span class="acc-icon text-mutedgray text-[18px] transition-transform duration-300">+</span>
-              </button>
-              <div id="groomAcc" class="acc-drawer px-5 bg-purewhite">
-                <div class="py-4 space-y-3.5 border-t border-hairline text-[12.5px]">
-                  <div class="flex items-center justify-between">
-                    <div>
-                      <span class="text-mutedgray text-[11px] block">신랑 서대희</span>
-                      <span class="font-medium text-pureblack">신한 110-482-910234</span>
-                    </div>
-                    <button
-                      type="button"
-                      onclick="copyText('110-482-910234', '신랑 서대희 계좌번호가 복사되었습니다.')"
-                      class="px-3.5 py-1.5 rounded-full bg-pureblack text-purewhite text-[11px]"
-                    >
-                      복사
-                    </button>
+        <button
+          type="button"
+          onclick="copyText('광주전남통합특별시 서구 풍서좌로 269 제이아트컨벤션', '웨딩홀 주소가 복사되었습니다.')"
+          class="mt-3 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-applegray text-[11px] text-charcoal active:scale-95 transition-transform"
+        >
+          <span>주소 복사하기</span>
+        </button>
+      </div>
+
+      <!-- Minimal Architectural Vector Map -->
+      <div id="vectorMapBox" class="mt-8 p-5 rounded-3xl bg-applegray border border-hairline">
+        <svg viewBox="0 0 360 190" class="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="제이아트컨벤션 약도">
+          <!-- Architectural Road Grid -->
+          <path class="map-stroke" d="M18 48 H342" stroke="#D1D1D6" stroke-width="6" stroke-linecap="round" />
+          <path class="map-stroke" d="M18 138 H342" stroke="#1D1D1F" stroke-width="8" stroke-linecap="round" />
+          <path class="map-stroke" d="M112 16 V174" stroke="#D1D1D6" stroke-width="6" stroke-linecap="round" />
+          <path class="map-stroke" d="M254 16 V174" stroke="#D1D1D6" stroke-width="6" stroke-linecap="round" />
+
+          <!-- Road Label -->
+          <text x="28" y="127" fill="#6E6E73" font-size="10" font-family="Pretendard, sans-serif">풍서좌로</text>
+          <text x="262" y="34" fill="#86868B" font-size="9.5" font-family="Pretendard, sans-serif">풍암·금호 방면</text>
+
+          <!-- J-ART Convention Pin -->
+          <rect x="136" y="70" width="96" height="44" rx="12" fill="#000000" />
+          <text x="184" y="90" text-anchor="middle" fill="#FFFFFF" font-size="10.5" font-weight="600" font-family="Pretendard, sans-serif">제이아트컨벤션</text>
+          <text x="184" y="104" text-anchor="middle" fill="#D1D1D6" font-size="9" font-family="Pretendard, sans-serif">1층 아모르홀</text>
+          <circle cx="184" cy="138" r="5" fill="#000000" stroke="#FFFFFF" stroke-width="2" />
+        </svg>
+      </div>
+
+      <!-- Navigation App Launchers -->
+      <div class="mt-4 grid grid-cols-3 gap-2.5">
+        <a
+          href="https://map.naver.com/v5/search/%EC%A0%9C%EC%9D%B4%EC%95%84%ED%8A%B8%EC%BB%A8%EB%B2%A4%EC%85%98"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="py-3 rounded-2xl bg-applegray text-center text-[12px] font-medium text-pureblack border border-hairline active:scale-95 transition-transform"
+        >
+          네이버지도
+        </a>
+        <a
+          href="https://map.kakao.com/link/search/%EC%A0%9C%EC%9D%B4%EC%95%84%ED%8A%B8%EC%BB%A8%EB%B2%A4%EC%85%98"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="py-3 rounded-2xl bg-applegray text-center text-[12px] font-medium text-pureblack border border-hairline active:scale-95 transition-transform"
+        >
+          카카오맵
+        </a>
+        <a
+          href="https://apis.openapi.sk.com/tmap/app/routes?appKey=&name=%EC%A0%9C%EC%9D%B4%EC%95%84%ED%8A%B8%EC%BB%A8%EB%B2%A4%EC%85%98"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="py-3 rounded-2xl bg-applegray text-center text-[12px] font-medium text-pureblack border border-hairline active:scale-95 transition-transform"
+        >
+          티맵
+        </a>
+      </div>
+
+      <!-- Venue Parking Summary -->
+      <div class="mt-6 p-4 rounded-2xl bg-offwhite border border-hairline text-[12.5px] leading-[1.75] text-charcoal">
+        <p><strong class="font-semibold text-pureblack">주차 안내</strong> · 제이아트컨벤션 전용 지상·지하 주차장 이용 (하객 무료 주차 지원)</p>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         SECTION 6: INVERTED DARK LOOKBOOK FINALE (마음 전하실 곳 & 클로징)
+    ================================================================ -->
+    <section class="editorial-layer-dark px-6 pt-20 pb-24">
+      <div class="text-center mb-10">
+        <p class="font-editorial italic text-[15px] tracking-[0.2em] text-white/50">With Gratitude</p>
+        <h2 class="font-serifkr text-[20px] font-light text-purewhite mt-1.5">마음 전하실 곳</h2>
+        <p class="text-[12.5px] text-white/60 leading-[1.8] mt-3">
+          참석이 어려우신 분들을 위해<br />
+          축하의 마음을 전하실 계좌번호를 안내해 드립니다.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <!-- Groom Side Account Accordion -->
+        <div class="rounded-2xl border border-white/15 bg-white/[0.04] overflow-hidden">
+          <button
+            type="button"
+            onclick="toggleAccordion('accGroom', this)"
+            class="w-full px-5 py-4 flex items-center justify-between text-left text-[13.5px] font-medium text-purewhite"
+          >
+            <span>신랑측 계좌번호 보기</span>
+            <span class="acc-icon font-editorial text-[20px] leading-none transition-transform duration-300">+</span>
+          </button>
+          <div id="accGroom" class="acc-drawer">
+            <div class="acc-inner">
+              <div class="px-5 pb-5 pt-1 space-y-3.5 border-t border-white/10 text-[13px]">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-white/55 text-[11.5px]">신랑 · 서대희</p>
+                    <p class="text-purewhite mt-0.5">은행명 000-0000-0000-00</p>
                   </div>
-                  <div class="flex items-center justify-between pt-2.5 border-t border-hairline/70">
-                    <div>
-                      <span class="text-mutedgray text-[11px] block">아버지 서영삼</span>
-                      <span class="font-medium text-pureblack">국민 042102-04-192837</span>
-                    </div>
-                    <button
-                      type="button"
-                      onclick="copyText('042102-04-192837', '아버지 서영삼 계좌번호가 복사되었습니다.')"
-                      class="px-3.5 py-1.5 rounded-full border border-pureblack text-pureblack text-[11px]"
-                    >
-                      복사
-                    </button>
-                  </div>
-                  <div class="flex items-center justify-between pt-2.5 border-t border-hairline/70">
-                    <div>
-                      <span class="text-mutedgray text-[11px] block">어머니 윤성숙</span>
-                      <span class="font-medium text-pureblack">농협 352-0841-2910-43</span>
-                    </div>
-                    <button
-                      type="button"
-                      onclick="copyText('352-0841-2910-43', '어머니 윤성숙 계좌번호가 복사되었습니다.')"
-                      class="px-3.5 py-1.5 rounded-full border border-pureblack text-pureblack text-[11px]"
-                    >
-                      복사
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onclick="copyText('000-0000-0000-00', '신랑 서대희 계좌번호가 복사되었습니다.')"
+                    class="px-3.5 py-1.5 rounded-full bg-purewhite text-pureblack text-[11px] font-medium active:scale-95 transition-transform"
+                  >
+                    복사
+                  </button>
                 </div>
-              </div>
-            </div>
-
-            <!-- Bride Side Account Accordion (박유정, 박현철, 조현주) -->
-            <div class="tilt-card rounded-2xl border border-hairline bg-purewhite overflow-hidden">
-              <div class="tilt-glare"></div>
-              <button
-                type="button"
-                onclick="toggleAccordion('brideAcc', this)"
-                class="w-full px-5 py-4 flex items-center justify-between text-[13.5px] font-serifKr font-medium text-pureblack"
-              >
-                <span>신부측 계좌번호</span>
-                <span class="acc-icon text-mutedgray text-[18px] transition-transform duration-300">+</span>
-              </button>
-              <div id="brideAcc" class="acc-drawer px-5 bg-purewhite">
-                <div class="py-4 space-y-3.5 border-t border-hairline text-[12.5px]">
-                  <div class="flex items-center justify-between">
-                    <div>
-                      <span class="text-mutedgray text-[11px] block">신부 박유정</span>
-                      <span class="font-medium text-pureblack">우리 1002-748-291048</span>
-                    </div>
-                    <button
-                      type="button"
-                      onclick="copyText('1002-748-291048', '신부 박유정 계좌번호가 복사되었습니다.')"
-                      class="px-3.5 py-1.5 rounded-full bg-pureblack text-purewhite text-[11px]"
-                    >
-                      복사
-                    </button>
+                <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                  <div>
+                    <p class="text-white/55 text-[11.5px]">아버지 · 서영삼</p>
+                    <p class="text-purewhite mt-0.5">은행명 000-0000-0000-00</p>
                   </div>
-                  <div class="flex items-center justify-between pt-2.5 border-t border-hairline/70">
-                    <div>
-                      <span class="text-mutedgray text-[11px] block">아버지 박현철</span>
-                      <span class="font-medium text-pureblack">하나 381-910284-72105</span>
-                    </div>
-                    <button
-                      type="button"
-                      onclick="copyText('381-910284-72105', '아버지 박현철 계좌번호가 복사되었습니다.')"
-                      class="px-3.5 py-1.5 rounded-full border border-pureblack text-pureblack text-[11px]"
-                    >
-                      복사
-                    </button>
+                  <button
+                    type="button"
+                    onclick="copyText('000-0000-0000-00', '아버지 서영삼 계좌번호가 복사되었습니다.')"
+                    class="px-3.5 py-1.5 rounded-full bg-purewhite text-pureblack text-[11px] font-medium active:scale-95 transition-transform"
+                  >
+                    복사
+                  </button>
+                </div>
+                <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                  <div>
+                    <p class="text-white/55 text-[11.5px]">어머니 · 윤성숙</p>
+                    <p class="text-purewhite mt-0.5">은행명 000-0000-0000-00</p>
                   </div>
-                  <div class="flex items-center justify-between pt-2.5 border-t border-hairline/70">
-                    <div>
-                      <span class="text-mutedgray text-[11px] block">어머니 조현주</span>
-                      <span class="font-medium text-pureblack">신한 110-392-847192</span>
-                    </div>
-                    <button
-                      type="button"
-                      onclick="copyText('110-392-847192', '어머니 조현주 계좌번호가 복사되었습니다.')"
-                      class="px-3.5 py-1.5 rounded-full border border-pureblack text-pureblack text-[11px]"
-                    >
-                      복사
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onclick="copyText('000-0000-0000-00', '어머니 윤성숙 계좌번호가 복사되었습니다.')"
+                    class="px-3.5 py-1.5 rounded-full bg-purewhite text-pureblack text-[11px] font-medium active:scale-95 transition-transform"
+                  >
+                    복사
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Share Link Button & Minimal Colophon -->
-          <div class="mt-12 text-center">
-            <button
-              type="button"
-              onclick="copyText(window.location.href, '청첩장 링크가 복사되었습니다.')"
-              class="w-full py-4 rounded-full bg-pureblack text-purewhite text-[12px] tracking-[0.14em] uppercase font-medium hover:opacity-90 transition-opacity"
-            >
-              청첩장 링크 공유하기
-            </button>
-            <p class="font-editorial italic text-[14px] text-mutedgray mt-8">
-              SEO DAEHEE &amp; PARK YOOJEONG · 2027. 05. 08
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <!-- =================================================================
-       MODAL 1: HOSTS & CONTACT BOTTOM SHEET (CALL & SMS)
-       * 아래 혼주 전화번호를 실제 연락처로 수정해 사용하세요.
-  ================================================================== -->
-  <div id="hostsModal" onclick="closeHostsModal()" class="fixed inset-0 z-50 hidden bg-black/65 backdrop-blur-xs items-end justify-center">
-    <div onclick="event.stopPropagation()" class="w-full max-w-[480px] bg-purewhite rounded-t-3xl p-7 pb-9 border-t border-hairline shadow-2xl">
-      <div class="w-10 h-1 bg-hairline rounded-full mx-auto mb-5"></div>
-      <div class="flex items-center justify-between pb-3 border-b border-hairline">
-        <span class="text-[12px] font-medium text-pureblack">혼주 연락처</span>
-        <button type="button" onclick="closeHostsModal()" class="text-mutedgray hover:text-pureblack text-sm">✕</button>
-      </div>
-
-      <div class="mt-5 grid grid-cols-2 gap-5 text-[13px] font-serifKr">
-        <div class="space-y-3.5">
-          <p class="text-[10.5px] tracking-[0.16em] uppercase text-mutedgray font-sansKr">신랑측</p>
-          <div class="flex items-center justify-between">
-            <span>신랑 서대희</span>
-            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
-              <a href="tel:010-1234-5678" class="underline underline-offset-4 text-pureblack">전화</a>
-              <a href="sms:010-1234-5678" class="text-mutedgray hover:text-pureblack">문자</a>
-            </div>
-          </div>
-          <div class="flex items-center justify-between">
-            <span>부 서영삼</span>
-            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
-              <a href="tel:010-2345-6789" class="underline underline-offset-4 text-pureblack">전화</a>
-              <a href="sms:010-2345-6789" class="text-mutedgray hover:text-pureblack">문자</a>
-            </div>
-          </div>
-          <div class="flex items-center justify-between">
-            <span>모 윤성숙</span>
-            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
-              <a href="tel:010-3456-7890" class="underline underline-offset-4 text-pureblack">전화</a>
-              <a href="sms:010-3456-7890" class="text-mutedgray hover:text-pureblack">문자</a>
-            </div>
-          </div>
         </div>
 
-        <div class="space-y-3.5 border-l border-hairline pl-5">
-          <p class="text-[10.5px] tracking-[0.16em] uppercase text-mutedgray font-sansKr">신부측</p>
-          <div class="flex items-center justify-between">
-            <span>신부 박유정</span>
-            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
-              <a href="tel:010-9876-5432" class="underline underline-offset-4 text-pureblack">전화</a>
-              <a href="sms:010-9876-5432" class="text-mutedgray hover:text-pureblack">문자</a>
-            </div>
-          </div>
-          <div class="flex items-center justify-between">
-            <span>부 박현철</span>
-            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
-              <a href="tel:010-8765-4321" class="underline underline-offset-4 text-pureblack">전화</a>
-              <a href="sms:010-8765-4321" class="text-mutedgray hover:text-pureblack">문자</a>
-            </div>
-          </div>
-          <div class="flex items-center justify-between">
-            <span>모 조현주</span>
-            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
-              <a href="tel:010-7654-3210" class="underline underline-offset-4 text-pureblack">전화</a>
-              <a href="sms:010-7654-3210" class="text-mutedgray hover:text-pureblack">문자</a>
+        <!-- Bride Side Account Accordion -->
+        <div class="rounded-2xl border border-white/15 bg-white/[0.04] overflow-hidden">
+          <button
+            type="button"
+            onclick="toggleAccordion('accBride', this)"
+            class="w-full px-5 py-4 flex items-center justify-between text-left text-[13.5px] font-medium text-purewhite"
+          >
+            <span>신부측 계좌번호 보기</span>
+            <span class="acc-icon font-editorial text-[20px] leading-none transition-transform duration-300">+</span>
+          </button>
+          <div id="accBride" class="acc-drawer">
+            <div class="acc-inner">
+              <div class="px-5 pb-5 pt-1 space-y-3.5 border-t border-white/10 text-[13px]">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-white/55 text-[11.5px]">신부 · 박유정</p>
+                    <p class="text-purewhite mt-0.5">은행명 000-0000-0000-00</p>
+                  </div>
+                  <button
+                    type="button"
+                    onclick="copyText('000-0000-0000-00', '신부 박유정 계좌번호가 복사되었습니다.')"
+                    class="px-3.5 py-1.5 rounded-full bg-purewhite text-pureblack text-[11px] font-medium active:scale-95 transition-transform"
+                  >
+                    복사
+                  </button>
+                </div>
+                <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                  <div>
+                    <p class="text-white/55 text-[11.5px]">아버지 · 박현철</p>
+                    <p class="text-purewhite mt-0.5">은행명 000-0000-0000-00</p>
+                  </div>
+                  <button
+                    type="button"
+                    onclick="copyText('000-0000-0000-00', '아버지 박현철 계좌번호가 복사되었습니다.')"
+                    class="px-3.5 py-1.5 rounded-full bg-purewhite text-pureblack text-[11px] font-medium active:scale-95 transition-transform"
+                  >
+                    복사
+                  </button>
+                </div>
+                <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                  <div>
+                    <p class="text-white/55 text-[11.5px]">어머니 · 조현주</p>
+                    <p class="text-purewhite mt-0.5">은행명 000-0000-0000-00</p>
+                  </div>
+                  <button
+                    type="button"
+                    onclick="copyText('000-0000-0000-00', '어머니 조현주 계좌번호가 복사되었습니다.')"
+                    class="px-3.5 py-1.5 rounded-full bg-purewhite text-pureblack text-[11px] font-medium active:scale-95 transition-transform"
+                  >
+                    복사
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Share Link & Closing Credits -->
+      <div class="mt-14 pt-10 border-t border-white/10 text-center">
+        <button
+          type="button"
+          onclick="copyText(window.location.href, '청첩장 링크가 클립보드에 복사되었습니다.')"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-white/25 text-[11.5px] tracking-[0.14em] uppercase text-purewhite hover:bg-purewhite hover:text-pureblack active:scale-95 transition-all"
+        >
+          <span>청첩장 주소 복사하기</span>
+        </button>
+
+        <p class="font-editorial italic text-[17px] tracking-[0.12em] text-purewhite/90 mt-10">
+          SEO DAEHEE &amp; PARK YOOJEONG
+        </p>
+        <p class="text-[11px] tracking-[0.16em] uppercase text-white/40 mt-1.5">
+          2027. 05. 08 · J-ART CONVENTION
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- =================================================================
+       MODAL 1: HOSTS CONTACT SHEET
+  ================================================================== -->
+  <div id="hostsModal" onclick="closeHostsModal()" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-end sm:items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="w-full max-w-[400px] rounded-3xl bg-purewhite text-pureblack p-6 shadow-2xl border border-hairline">
+      <div class="flex items-center justify-between pb-4 border-b border-hairline">
+        <span class="font-editorial italic text-[18px]">Contact</span>
+        <button type="button" onclick="closeHostsModal()" class="text-[11px] tracking-[0.16em] uppercase text-mutedgray px-2.5 py-1 rounded-full bg-applegray">
+          CLOSE
+        </button>
+      </div>
+
+      <div class="mt-5 space-y-5 text-[13.5px]">
+        <div>
+          <p class="font-editorial italic text-[13px] text-mutedgray mb-2">Groom’s Side · 신랑측</p>
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span>신랑 <strong class="font-semibold">서대희</strong></span>
+              <div class="flex gap-1.5">
+                <a href="tel:01000000001" class="px-3 py-1 rounded-full bg-pureblack text-purewhite text-[11px]">전화</a>
+                <a href="sms:01000000001" class="px-3 py-1 rounded-full bg-applegray text-pureblack text-[11px]">문자</a>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>아버지 <strong class="font-semibold">서영삼</strong></span>
+              <div class="flex gap-1.5">
+                <a href="tel:01000000002" class="px-3 py-1 rounded-full bg-pureblack text-purewhite text-[11px]">전화</a>
+                <a href="sms:01000000002" class="px-3 py-1 rounded-full bg-applegray text-pureblack text-[11px]">문자</a>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>어머니 <strong class="font-semibold">윤성숙</strong></span>
+              <div class="flex gap-1.5">
+                <a href="tel:01000000003" class="px-3 py-1 rounded-full bg-pureblack text-purewhite text-[11px]">전화</a>
+                <a href="sms:01000000003" class="px-3 py-1 rounded-full bg-applegray text-pureblack text-[11px]">문자</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-hairline">
+          <p class="font-editorial italic text-[13px] text-mutedgray mb-2">Bride’s Side · 신부측</p>
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span>신부 <strong class="font-semibold">박유정</strong></span>
+              <div class="flex gap-1.5">
+                <a href="tel:01000000004" class="px-3 py-1 rounded-full bg-pureblack text-purewhite text-[11px]">전화</a>
+                <a href="sms:01000000004" class="px-3 py-1 rounded-full bg-applegray text-pureblack text-[11px]">문자</a>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>아버지 <strong class="font-semibold">박현철</strong></span>
+              <div class="flex gap-1.5">
+                <a href="tel:01000000005" class="px-3 py-1 rounded-full bg-pureblack text-purewhite text-[11px]">전화</a>
+                <a href="sms:01000000005" class="px-3 py-1 rounded-full bg-applegray text-pureblack text-[11px]">문자</a>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>어머니 <strong class="font-semibold">조현주</strong></span>
+              <div class="flex gap-1.5">
+                <a href="tel:01000000006" class="px-3 py-1 rounded-full bg-pureblack text-purewhite text-[11px]">전화</a>
+                <a href="sms:01000000006" class="px-3 py-1 rounded-full bg-applegray text-pureblack text-[11px]">문자</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- =================================================================
-       MODAL 2: FULLSCREEN MONOCHROME LIGHTBOX
+       MODAL 2: SWIPEABLE FULLSCREEN LIGHTBOX & FILM THUMBNAIL BAR
   ================================================================== -->
-  <div id="lightboxModal" onclick="closeLightbox()" class="fixed inset-0 z-50 hidden bg-pureblack/95 backdrop-blur-md flex-col items-center justify-center p-5">
-    <div onclick="event.stopPropagation()" class="w-full max-w-[440px] flex items-center justify-between text-purewhite pb-4">
+  <div id="lightboxModal" onclick="closeLightbox()" class="fixed inset-0 z-50 hidden bg-pureblack/95 backdrop-blur-md flex-col items-center justify-between p-5 select-none">
+    <div onclick="event.stopPropagation()" class="w-full max-w-[440px] flex items-center justify-between text-purewhite pt-1">
       <span id="lbCounter" class="font-editorial italic text-[16px]">1 / 5</span>
       <button type="button" onclick="closeLightbox()" class="text-[11px] tracking-[0.18em] uppercase px-3.5 py-1.5 rounded-full border border-white/30">
         CLOSE
       </button>
     </div>
-    <img
-      id="lbImage"
-      onclick="event.stopPropagation()"
-      src=""
-      alt="확대된 웨딩 화보"
-      class="max-w-full max-h-[76vh] object-contain rounded-xl grayscale contrast-[1.12]"
-    />
+
+    <div id="lbSwipeStage" onclick="event.stopPropagation()" class="relative w-full max-w-[440px] flex-1 flex items-center justify-center overflow-hidden my-3">
+      <img
+        id="lbImage"
+        src=""
+        alt="확대된 웨딩 화보"
+        class="max-w-full max-h-[66vh] object-contain rounded-xl grayscale contrast-[1.12] transition-all duration-300"
+      />
+    </div>
+
+    <div onclick="event.stopPropagation()" class="w-full max-w-[440px] pb-2">
+      <div id="lbThumbBar" class="flex items-center justify-center gap-2"></div>
+      <p class="text-center text-[10.5px] text-white/45 tracking-[0.06em] mt-2.5">
+        좌우로 스와이프하여 다음 화보를 감상하세요
+      </p>
+    </div>
   </div>
 
   <!-- =================================================================
@@ -1277,7 +1151,6 @@
     const appScroll = document.getElementById('appScroll');
     const globalProgressBar = document.getElementById('globalProgressBar');
 
-    // Hero & Kinetic Masthead Elements
     const heroTrack = document.getElementById('heroTrack');
     const heroImg = document.getElementById('heroImg');
     const heroTopDate = document.getElementById('heroTopDate');
@@ -1285,12 +1158,10 @@
     const kineticMasthead = document.getElementById('kineticMasthead');
     const stickyNavHeader = document.getElementById('stickyNavHeader');
 
-    // Story Elements
     const storySection = document.getElementById('storySection');
     const scrubParagraph = document.getElementById('scrubParagraph');
     const signatureBox = document.getElementById('signatureBox');
 
-    // Dual-Speed Parallax & Kinetic Watermark Elements
     const dualGrid = document.getElementById('dualGrid');
     const dualColLeft = document.getElementById('dualColLeft');
     const dualColRight = document.getElementById('dualColRight');
@@ -1302,8 +1173,9 @@
       const overlay = document.getElementById('preloaderOverlay');
       const percentEl = document.getElementById('preloaderPercent');
       const lineEl = document.getElementById('preloaderLine');
-      let progress = 0;
+      if (!overlay || !percentEl || !lineEl) return;
 
+      let progress = 0;
       const timer = setInterval(() => {
         progress += Math.floor(Math.random() * 9) + 6;
         if (progress >= 100) {
@@ -1314,8 +1186,7 @@
 
           setTimeout(() => {
             overlay.classList.add('curtain-open');
-            // Zoom-out reveal of hero cover image (1.18 -> 1.0)
-            heroImg.style.transform = 'scale(1)';
+            if (heroImg) heroImg.style.transform = 'scale(1)';
             setTimeout(() => {
               document.body.classList.add('experience-started');
               overlay.style.display = 'none';
@@ -1327,10 +1198,15 @@
         }
       }, 42);
     }
-    window.addEventListener('load', runCinematicPreloader);
+    if (document.readyState === 'complete') {
+      runCinematicPreloader();
+    } else {
+      window.addEventListener('load', runCinematicPreloader);
+    }
 
     // 4. Split Invitation Text into Individual Words for Scroll-Scrubbed Highlight
     function initScrubWords() {
+      if (!scrubParagraph) return;
       const rawHtml = scrubParagraph.innerHTML.trim();
       const lines = rawHtml.split(/<br\s*\/?>/i);
       scrubParagraph.innerHTML = lines
@@ -1348,74 +1224,127 @@
     const scrubWords = Array.from(document.querySelectorAll('.scrub-word'));
     const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
-    // 60fps Scroll-Driven Kinetic Motion Handler + Scroll Velocity Inertia Skew
     let ticking = false;
     let lastScrollTop = 0;
     let velocityResetTimer = null;
     let gyroOffsetX = 0;
     let gyroOffsetY = 0;
 
+    // Interactive Touch Loupe (High-Res Magnifier on Long-Press without blocking vertical scroll)
+    const loupe = document.getElementById('touchLoupe');
+    const loupeTargets = document.querySelectorAll('.loupe-target');
+    let loupeHoldTimer = null;
+    let isLoupeActive = false;
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    function updateLoupePosition(target, clientX, clientY) {
+      if (!loupe) return;
+      const img = target.querySelector('img');
+      if (!img) return;
+      const rect = target.getBoundingClientRect();
+      const relX = clamp((clientX - rect.left) / rect.width, 0, 1);
+      const relY = clamp((clientY - rect.top) / rect.height, 0, 1);
+
+      loupe.style.backgroundImage = `url('${img.currentSrc || img.src}')`;
+      loupe.style.backgroundSize = `${rect.width * 2.25}px ${rect.height * 2.25}px`;
+      loupe.style.backgroundPosition = `${relX * 100}% ${relY * 100}%`;
+      loupe.style.left = `${clientX}px`;
+      loupe.style.top = `${clientY}px`;
+    }
+
+    loupeTargets.forEach((target) => {
+      target.addEventListener('pointerdown', (e) => {
+        touchStartX = e.clientX;
+        touchStartY = e.clientY;
+        clearTimeout(loupeHoldTimer);
+        loupeHoldTimer = setTimeout(() => {
+          isLoupeActive = true;
+          updateLoupePosition(target, e.clientX, e.clientY);
+          if (loupe) loupe.classList.add('active');
+        }, 320);
+      }, { passive: true });
+
+      target.addEventListener('pointermove', (e) => {
+        if (!isLoupeActive) {
+          if (Math.abs(e.clientX - touchStartX) > 6 || Math.abs(e.clientY - touchStartY) > 6) {
+            clearTimeout(loupeHoldTimer);
+          }
+          return;
+        }
+        updateLoupePosition(target, e.clientX, e.clientY);
+      }, { passive: true });
+
+      const stopLoupe = () => {
+        clearTimeout(loupeHoldTimer);
+        if (isLoupeActive) {
+          isLoupeActive = false;
+          if (loupe) loupe.classList.remove('active');
+        }
+      };
+
+      target.addEventListener('pointerup', stopLoupe, { passive: true });
+      target.addEventListener('pointerleave', stopLoupe, { passive: true });
+      target.addEventListener('pointercancel', stopLoupe, { passive: true });
+    });
+
     function onScrollFrame() {
+      if (!appScroll) return;
       const scrollTop = appScroll.scrollTop;
-      const scrollVelocity = clamp(scrollTop - lastScrollTop, -45, 45);
+      const maxScroll = Math.max(1, appScroll.scrollHeight - appScroll.clientHeight);
+      const vh = appScroll.clientHeight;
+      const scrollVelocity = scrollTop - lastScrollTop;
       lastScrollTop = scrollTop;
 
-      const vh = appScroll.clientHeight;
-      const maxScroll = appScroll.scrollHeight - vh;
-
-      // Top Progress Bar
-      if (maxScroll > 0) {
+      if (globalProgressBar) {
         globalProgressBar.style.width = `${(scrollTop / maxScroll) * 100}%`;
       }
 
-      // 2. Hero Kinetic Masthead (Scale-Down & Pin to Sticky Header + Gyroscope Spatial Offset)
-      const heroDist = Math.max(1, heroTrack.offsetHeight - vh * 0.45);
-      const pinProgress = clamp(scrollTop / heroDist, 0, 1);
+      if (heroTrack && kineticMasthead && stickyNavHeader && heroImg && heroTopDate && heroBottomMeta) {
+        const heroScrollRange = Math.max(1, heroTrack.offsetHeight - vh);
+        const heroProgress = clamp(scrollTop / heroScrollRange, 0, 1);
 
-      const startTop = 108;
-      const endTop = 17;
-      const currentTop = startTop - pinProgress * (startTop - endTop);
-      const currentScale = 1 - pinProgress * 0.44;
-      const activeGyroX = gyroOffsetX * (1 - pinProgress);
-      const activeGyroY = gyroOffsetY * (1 - pinProgress);
+        const startTop = 108;
+        const endTop = 17;
+        const currentTop = startTop + (endTop - startTop) * heroProgress;
+        const currentScale = 1 - 0.44 * heroProgress;
 
-      kineticMasthead.style.top = `${currentTop}px`;
-      kineticMasthead.style.transform = `translate3d(calc(-50% + ${activeGyroX}px), ${activeGyroY}px, 0) scale(${currentScale})`;
+        kineticMasthead.style.top = `${currentTop}px`;
+        kineticMasthead.style.transform = `translate3d(calc(-50% + ${gyroOffsetX * 0.45 * (1 - heroProgress)}px), ${gyroOffsetY * 0.35 * (1 - heroProgress)}px, 0) scale(${currentScale})`;
 
-      if (pinProgress >= 0.86) {
-        stickyNavHeader.classList.add('is-pinned');
-        kineticMasthead.style.color = '#000000';
-      } else {
-        stickyNavHeader.classList.remove('is-pinned');
-        kineticMasthead.style.color = '#FFFFFF';
-      }
-
-      // Hero Cover Zoom, Gyroscope Depth & Bottom Meta Fade
-      if (document.body.classList.contains('experience-started')) {
-        const coverP = clamp(scrollTop / (heroTrack.offsetHeight - vh), 0, 1);
-        heroImg.style.transform = `scale(${1.04 + coverP * 0.14}) translate3d(${-activeGyroX * 0.75}px, ${coverP * 24 - activeGyroY * 0.75}px, 0)`;
-        heroTopDate.style.opacity = String(clamp(1 - coverP * 1.8, 0, 1));
-        heroBottomMeta.style.opacity = String(clamp(1 - coverP * 1.4, 0, 1));
-        heroBottomMeta.style.transform = `translate3d(${activeGyroX * 0.5}px, ${coverP * 24 + activeGyroY * 0.5}px, 0)`;
-      }
-
-      // 4. Story Section Word-by-Word Illumination & Fountain-Pen Signature Draw
-      const storyRect = storySection.getBoundingClientRect();
-      const storyProgress = clamp((vh * 0.76 - storyRect.top) / (storyRect.height * 0.52), 0, 1);
-      const litCount = Math.round(storyProgress * scrubWords.length);
-      scrubWords.forEach((wordEl, idx) => {
-        if (idx < litCount) {
-          wordEl.classList.add('lit');
-        } else {
-          wordEl.classList.remove('lit');
+        if (document.body.classList.contains('experience-started')) {
+          heroImg.style.transform = `scale(${1.05 + heroProgress * 0.14}) translate3d(${gyroOffsetX}px, ${scrollTop * 0.16 + gyroOffsetY}px, 0)`;
         }
-      });
+        heroTopDate.style.opacity = `${1 - heroProgress * 2.2}`;
+        heroBottomMeta.style.opacity = `${1 - heroProgress * 1.5}`;
+        heroBottomMeta.style.transform = `translate3d(${gyroOffsetX * -0.35}px, ${-scrollTop * 0.08}px, 0)`;
 
-      if (storyProgress > 0.78) {
-        signatureBox.classList.add('sig-drawn');
+        if (scrollTop >= heroScrollRange - 12) {
+          stickyNavHeader.classList.add('is-pinned');
+          kineticMasthead.style.color = '#000000';
+        } else {
+          stickyNavHeader.classList.remove('is-pinned');
+          kineticMasthead.style.color = '#FFFFFF';
+        }
       }
 
-      // 5. Dual-Speed Contrasting Parallax on 2-Column Spread
+      if (storySection && signatureBox) {
+        const storyRect = storySection.getBoundingClientRect();
+        const storyProgress = clamp((vh * 0.85 - storyRect.top) / (vh * 0.62), 0, 1);
+        const litCount = Math.floor(storyProgress * scrubWords.length);
+        scrubWords.forEach((wordEl, idx) => {
+          if (idx <= litCount && storyProgress > 0.04) {
+            wordEl.classList.add('lit');
+          } else {
+            wordEl.classList.remove('lit');
+          }
+        });
+
+        if (storyProgress > 0.78) {
+          signatureBox.classList.add('sig-drawn');
+        }
+      }
+
       if (dualGrid && dualColLeft && dualColRight) {
         const gridRect = dualGrid.getBoundingClientRect();
         if (gridRect.top < vh && gridRect.bottom > 0) {
@@ -1425,7 +1354,6 @@
         }
       }
 
-      // 6. Lateral Kinetic Watermark + Scroll Velocity Inertia Skew
       if (marqueeShowcase && kineticWatermark) {
         const mqRect = marqueeShowcase.getBoundingClientRect();
         if (mqRect.top < vh && mqRect.bottom > 0) {
@@ -1447,18 +1375,17 @@
       ticking = false;
     }
 
-    // 1. iPhone Gyroscope & Pointer Spatial Depth Parallax
+    // 2x Enhanced Gyroscope Spatial Parallax
     window.addEventListener('deviceorientation', (e) => {
       if (e.gamma === null || e.beta === null) return;
-      gyroOffsetX = clamp(e.gamma * 0.35, -14, 14);
-      gyroOffsetY = clamp((e.beta - 45) * 0.25, -10, 10);
+      gyroOffsetX = clamp(e.gamma * 0.7, -28, 28);
+      gyroOffsetY = clamp((e.beta - 45) * 0.5, -20, 20);
       if (!ticking) {
         window.requestAnimationFrame(onScrollFrame);
         ticking = true;
       }
     });
 
-    // Request iOS 13+ Motion Permission seamlessly on first touch if needed
     document.body.addEventListener(
       'touchstart',
       () => {
@@ -1477,97 +1404,68 @@
     function toggleDarkroomColor() {
       isColorDeveloped = !isColorDeveloped;
       const wash = document.getElementById('darkroomWash');
-      const dot = document.getElementById('darkroomDot');
-      const label = document.getElementById('darkroomLabel');
+      const inlineDots = document.querySelectorAll('.darkroom-dot');
+      const inlineLabels = document.querySelectorAll('.darkroom-label');
+      const lbImg = document.getElementById('lbImage');
 
-      wash.classList.add('flash');
-      setTimeout(() => wash.classList.remove('flash'), 450);
+      if (wash) {
+        wash.classList.add('flash');
+        setTimeout(() => wash.classList.remove('flash'), 450);
+      }
 
       if (isColorDeveloped) {
         document.body.classList.add('color-developed');
-        dot.style.backgroundColor = '#FFFFFF';
-        label.textContent = 'COLOR';
+        inlineDots.forEach((d) => (d.style.backgroundColor = '#FFFFFF'));
+        inlineLabels.forEach((l) => (l.textContent = 'COLOR'));
+        if (lbImg) lbImg.classList.remove('grayscale');
         showToast('원본 컬러 화보 모드로 전환되었습니다.');
       } else {
         document.body.classList.remove('color-developed');
-        dot.style.backgroundColor = 'rgba(255,255,255,0.6)';
-        label.textContent = 'B&W';
+        inlineDots.forEach((d) => (d.style.backgroundColor = 'rgba(255,255,255,0.6)'));
+        inlineLabels.forEach((l) => (l.textContent = 'MONO'));
+        if (lbImg) lbImg.classList.add('grayscale');
         showToast('클래식 흑백 화보 모드로 전환되었습니다.');
       }
     }
 
-    appScroll.addEventListener(
-      'scroll',
-      () => {
-        if (!ticking) {
-          window.requestAnimationFrame(onScrollFrame);
-          ticking = true;
-        }
-      },
-      { passive: true }
-    );
-    onScrollFrame();
+    if (appScroll) {
+      appScroll.addEventListener(
+        'scroll',
+        () => {
+          if (!ticking) {
+            window.requestAnimationFrame(onScrollFrame);
+            ticking = true;
+          }
+        },
+        { passive: true }
+      );
+      onScrollFrame();
+    }
 
-    // 5. Editorial Accordion Shutter Mask Reveal Observer
+    // 5. Clean Editorial Photo Reveal Observer & Typewriter Captions
     const shutterObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-revealed');
+            const fig = entry.target.closest('figure');
+            const capEl = fig ? fig.querySelector('.type-caption') : null;
+            if (capEl && !capEl.dataset.typed) {
+              capEl.dataset.typed = 'true';
+              const fullText = capEl.dataset.caption || '';
+              let i = 0;
+              const typeTimer = setInterval(() => {
+                capEl.textContent = fullText.slice(0, i + 1);
+                i++;
+                if (i >= fullText.length) clearInterval(typeTimer);
+              }, 36);
+            }
           }
         });
       },
       { root: appScroll, threshold: 0.16 }
     );
     document.querySelectorAll('.shutter-frame').forEach((el) => shutterObserver.observe(el));
-
-    // Interactive Touch Loupe (High-Res Magnifier on Press/Drag)
-    const loupe = document.getElementById('touchLoupe');
-    const loupeTargets = document.querySelectorAll('.loupe-target');
-    let loupeHoldTimer = null;
-    let isLoupeActive = false;
-
-    function updateLoupePosition(target, clientX, clientY) {
-      const img = target.querySelector('img');
-      if (!img) return;
-      const rect = target.getBoundingClientRect();
-      const relX = clamp((clientX - rect.left) / rect.width, 0, 1);
-      const relY = clamp((clientY - rect.top) / rect.height, 0, 1);
-
-      loupe.style.backgroundImage = `url('${img.currentSrc || img.src}')`;
-      loupe.style.backgroundSize = `${rect.width * 2.25}px ${rect.height * 2.25}px`;
-      loupe.style.backgroundPosition = `${relX * 100}% ${relY * 100}%`;
-      loupe.style.left = `${clientX}px`;
-      loupe.style.top = `${clientY}px`;
-    }
-
-    loupeTargets.forEach((target) => {
-      target.addEventListener('pointerdown', (e) => {
-        clearTimeout(loupeHoldTimer);
-        loupeHoldTimer = setTimeout(() => {
-          isLoupeActive = true;
-          updateLoupePosition(target, e.clientX, e.clientY);
-          loupe.classList.add('active');
-        }, 170);
-      });
-
-      target.addEventListener('pointermove', (e) => {
-        if (!isLoupeActive) return;
-        updateLoupePosition(target, e.clientX, e.clientY);
-      });
-
-      const stopLoupe = () => {
-        clearTimeout(loupeHoldTimer);
-        if (isLoupeActive) {
-          isLoupeActive = false;
-          loupe.classList.remove('active');
-        }
-      };
-
-      target.addEventListener('pointerup', stopLoupe);
-      target.addEventListener('pointerleave', stopLoupe);
-      target.addEventListener('pointercancel', stopLoupe);
-    });
 
     // 7. 3D Perspective Tilt + Specular Glass Glare
     document.querySelectorAll('.tilt-card').forEach((card) => {
@@ -1597,17 +1495,19 @@
 
     // Self-Drawing Architectural Vector Map Observer
     const vectorMapBox = document.getElementById('vectorMapBox');
-    const mapObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            vectorMapBox.classList.add('map-drawn');
-          }
-        });
-      },
-      { root: appScroll, threshold: 0.45 }
-    );
-    mapObserver.observe(vectorMapBox);
+    if (vectorMapBox) {
+      const mapObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              vectorMapBox.classList.add('map-drawn');
+            }
+          });
+        },
+        { root: appScroll, threshold: 0.45 }
+      );
+      mapObserver.observe(vectorMapBox);
+    }
 
     // 7. Real-Time Mechanical Split-Flap Countdown to 2027.05.08 13:00 KST
     const prevCd = { days: '', hours: '', mins: '', secs: '' };
@@ -1615,9 +1515,10 @@
       if (prevCd[key] === newVal) return;
       prevCd[key] = newVal;
       const el = document.getElementById(elId);
+      if (!el) return;
       el.textContent = newVal;
       el.classList.remove('flip-animate');
-      void el.offsetWidth; // trigger reflow for mechanical flip animation
+      void el.offsetWidth;
       el.classList.add('flip-animate');
     }
 
@@ -1673,7 +1574,7 @@
     let noteStep = 0;
     const pianoNotes = [261.63, 329.63, 392.00, 493.88, 523.25, 493.88, 392.00, 329.63];
 
-    function playWarmNote(freq) {
+    function playSoftPianoNote(freq) {
       if (!audioCtx) return;
       const now = audioCtx.currentTime;
       const osc = audioCtx.createOscillator();
@@ -1682,48 +1583,43 @@
       osc.frequency.setValueAtTime(freq, now);
 
       gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.035, now + 0.08);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
+      gain.gain.exponentialRampToValueAtTime(0.025, now + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
 
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       osc.start(now);
-      osc.stop(now + 1.65);
+      osc.stop(now + 2.3);
     }
 
     function toggleAmbientBGM() {
       const btn = document.getElementById('bgmToggleBtn');
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-
       if (!isBgmPlaying) {
-        if (!AudioContextClass) {
-          showToast('이 브라우저에서는 오디오를 지원하지 않습니다.');
-          return;
-        }
         if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
           audioCtx = new AudioContextClass();
         }
         if (audioCtx.state === 'suspended') {
           audioCtx.resume();
         }
         isBgmPlaying = true;
-        btn.classList.add('bgm-playing');
-        playWarmNote(pianoNotes[noteStep % pianoNotes.length]);
+        if (btn) btn.classList.add('bgm-playing');
+        playSoftPianoNote(pianoNotes[noteStep % pianoNotes.length]);
         noteStep++;
         bgmTimer = setInterval(() => {
-          playWarmNote(pianoNotes[noteStep % pianoNotes.length]);
+          playSoftPianoNote(pianoNotes[noteStep % pianoNotes.length]);
           noteStep++;
-        }, 950);
-        showToast('배경음악이 재생됩니다.');
+        }, 1450);
+        showToast('잔잔한 피아노 연주곡이 재생됩니다.');
       } else {
         isBgmPlaying = false;
-        btn.classList.remove('bgm-playing');
+        if (btn) btn.classList.remove('bgm-playing');
         clearInterval(bgmTimer);
-        showToast('배경음악이 꺼졌습니다.');
+        showToast('배경음악이 일시정지되었습니다.');
       }
     }
 
-    // Lightbox Gallery (실제 사진 교체 시 여기 배열의 경로도 동일하게 맞춰주세요)
+    // 3. Swipeable Lightbox Gallery + Film Thumbnail Bar
     const galleryImages = [
       'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=90',
       'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=90',
@@ -1731,37 +1627,106 @@
       'https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&q=90',
       'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=90',
     ];
+    let currentLbIdx = 0;
+
+    function renderLightboxFrame(idx) {
+      currentLbIdx = (idx + galleryImages.length) % galleryImages.length;
+      const lbImg = document.getElementById('lbImage');
+      const lbCounter = document.getElementById('lbCounter');
+      const thumbBar = document.getElementById('lbThumbBar');
+
+      if (lbImg) {
+        lbImg.style.opacity = '0.35';
+        setTimeout(() => {
+          lbImg.src = galleryImages[currentLbIdx];
+          if (isColorDeveloped) {
+            lbImg.classList.remove('grayscale');
+          } else {
+            lbImg.classList.add('grayscale');
+          }
+          lbImg.style.opacity = '1';
+        }, 90);
+      }
+      if (lbCounter) {
+        lbCounter.textContent = `${currentLbIdx + 1} / ${galleryImages.length}`;
+      }
+      if (thumbBar) {
+        thumbBar.innerHTML = galleryImages
+          .map(
+            (src, i) => `
+            <button
+              type="button"
+              onclick="renderLightboxFrame(${i})"
+              class="w-11 h-14 rounded-md overflow-hidden border transition-all ${
+                i === currentLbIdx ? 'border-purewhite scale-105 opacity-100' : 'border-white/20 opacity-45'
+              }"
+            >
+              <img src="${src}" alt="썸네일 ${i + 1}" class="w-full h-full object-cover ${isColorDeveloped ? '' : 'grayscale'}" />
+            </button>`
+          )
+          .join('');
+      }
+    }
 
     function openLightbox(idx) {
       if (isLoupeActive) return;
       const modal = document.getElementById('lightboxModal');
-      document.getElementById('lbImage').src = galleryImages[idx];
-      document.getElementById('lbCounter').textContent = `${idx + 1} / ${galleryImages.length}`;
+      if (!modal) return;
+      renderLightboxFrame(idx);
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }
 
     function closeLightbox() {
       const modal = document.getElementById('lightboxModal');
+      if (!modal) return;
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     }
 
-    // Hosts Bottom Sheet & Account Accordions
+    const lbSwipeStage = document.getElementById('lbSwipeStage');
+    let lbTouchStartX = 0;
+    if (lbSwipeStage) {
+      lbSwipeStage.addEventListener(
+        'touchstart',
+        (e) => {
+          lbTouchStartX = e.changedTouches[0].clientX;
+        },
+        { passive: true }
+      );
+      lbSwipeStage.addEventListener(
+        'touchend',
+        (e) => {
+          const diffX = e.changedTouches[0].clientX - lbTouchStartX;
+          if (Math.abs(diffX) > 42) {
+            if (diffX < 0) {
+              renderLightboxFrame(currentLbIdx + 1);
+            } else {
+              renderLightboxFrame(currentLbIdx - 1);
+            }
+          }
+        },
+        { passive: true }
+      );
+    }
+
     function openHostsModal() {
       const modal = document.getElementById('hostsModal');
+      if (!modal) return;
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }
 
     function closeHostsModal() {
       const modal = document.getElementById('hostsModal');
+      if (!modal) return;
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     }
 
     function toggleAccordion(id, btn) {
       const target = document.getElementById(id);
+      if (!target) return;
       const icon = btn.querySelector('.acc-icon');
       const isOpen = target.classList.contains('open');
 
@@ -1770,11 +1735,10 @@
 
       if (!isOpen) {
         target.classList.add('open');
-        icon.style.transform = 'rotate(45deg)';
+        if (icon) icon.style.transform = 'rotate(45deg)';
       }
     }
 
-    // Clipboard Copy & Toast Notification
     function copyText(text, message) {
       const temp = document.createElement('textarea');
       temp.value = text;
@@ -1794,6 +1758,7 @@
     let toastTimer = null;
     function showToast(message) {
       const bar = document.getElementById('toastBar');
+      if (!bar) return;
       bar.textContent = message;
       bar.classList.remove('opacity-0', 'translate-y-2');
       bar.classList.add('opacity-100', 'translate-y-0');
