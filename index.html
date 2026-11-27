@@ -29,11 +29,12 @@
         extend: {
           colors: {
             purewhite: '#FFFFFF',
-            applegray: '#F5F5F7',
+            offwhite: '#FAFAFA',
+            applegray: '#F2F2F2',
             pureblack: '#000000',
             charcoal: '#141414',
-            mutedgray: '#6E6E73',
-            hairline: '#E5E5EA',
+            mutedgray: '#737373',
+            hairline: '#E5E5E5',
           },
           fontFamily: {
             editorial: ['"Cormorant Garamond"', 'Georgia', 'serif'],
@@ -75,15 +76,143 @@
       display: none;
     }
 
-    /* Subtle Editorial Print Film Grain Overlay */
+    /* 1. Cinematic Black Curtain Preloader */
+    #preloaderOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .curtain-panel {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background-color: #000000;
+      transition: transform 1.15s cubic-bezier(0.77, 0, 0.175, 1);
+      will-change: transform;
+    }
+    .curtain-top { top: 0; }
+    .curtain-bottom { bottom: 0; }
+    #preloaderOverlay.curtain-open .curtain-top {
+      transform: translateY(-100%);
+    }
+    #preloaderOverlay.curtain-open .curtain-bottom {
+      transform: translateY(100%);
+    }
+    #preloaderOverlay.curtain-open {
+      pointer-events: none;
+    }
+    #preloaderCenter {
+      position: relative;
+      z-index: 2;
+      transition: opacity 0.45s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #preloaderOverlay.curtain-open #preloaderCenter {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    /* Cover Photo Initial Zoom-Out (1.18 -> 1.0) on Curtain Open */
+    #heroImg {
+      transform: scale(1.18);
+      transition: transform 1.85s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    body.experience-started #heroImg {
+      transition: none;
+    }
+
+    /* 2. Hero Kinetic Masthead & Pinned Sticky Header */
+    #stickyNavHeader {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      height: 56px;
+      z-index: 42;
+      pointer-events: none;
+      transition: background-color 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease;
+      border-bottom: 0.5px solid transparent;
+    }
+    #stickyNavHeader.is-pinned {
+      background-color: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom-color: #E5E5E5;
+    }
+
+    #kineticMasthead {
+      position: fixed;
+      left: 50%;
+      z-index: 43;
+      pointer-events: none;
+      transform-origin: center center;
+      white-space: nowrap;
+      will-change: transform, top, color;
+      transition: color 0.3s ease;
+    }
+
+    /* 3. Fine Paper Film Grain Texture Overlay (3%) */
     .film-grain {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 40;
-      opacity: 0.032;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      z-index: 45;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
+
+    /* 0.5px Architectural Hairline Grid & Corner Crosshairs (+) */
+    .arch-grid-lines {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      pointer-events: none;
+      z-index: 35;
+    }
+    .arch-grid-lines::before,
+    .arch-grid-lines::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 0.5px;
+      background-color: rgba(115, 115, 115, 0.16);
+    }
+    .arch-grid-lines::before { left: 20px; }
+    .arch-grid-lines::after { right: 20px; }
+
+    .crosshair-divider {
+      position: relative;
+      height: 0.5px;
+      background-color: #E5E5E5;
+      width: 100%;
+    }
+    .crosshair-divider::before,
+    .crosshair-divider::after {
+      content: '+';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-52%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      line-height: 1;
+      color: #737373;
+      background: transparent;
+    }
+    .crosshair-divider::before { left: 16.5px; }
+    .crosshair-divider::after { right: 16.5px; }
 
     /* GPU Accelerated Layer */
     .gpu-layer {
@@ -91,40 +220,174 @@
       transform: translate3d(0, 0, 0);
     }
 
-    /* High-Contrast Monochrome Photo Filter */
-    .bw-editorial-photo {
-      filter: grayscale(100%) contrast(1.12);
-      transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+    /* 5. Editorial Accordion Shutter Mask Reveal & Zoom-Settle (1.15 -> 1.0) */
+    .shutter-frame {
+      position: relative;
+      overflow: hidden;
+      clip-path: inset(0 16% 0 16%);
+      opacity: 0.2;
+      transition: clip-path 1.15s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.95s ease;
     }
-
-    /* Scroll Reveal Animation for Photobook Items */
-    .reveal-frame {
-      opacity: 0;
-      transform: translateY(34px);
-      transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1), transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .reveal-frame.is-visible {
+    .shutter-frame.is-revealed {
+      clip-path: inset(0 0% 0 0%);
       opacity: 1;
-      transform: translateY(0);
+    }
+    .shutter-frame .shutter-photo {
+      filter: grayscale(100%) contrast(1.15);
+      transform: scale(1.15) translate3d(0, 0, 0);
+      transition: transform 1.45s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .shutter-frame.is-revealed .shutter-photo {
+      transform: scale(1.0) translate3d(0, 0, 0);
     }
 
-    /* Scroll-Scrubbed Character Illumination */
-    .scrub-char {
-      color: #D2D2D7;
-      transition: color 0.14s linear;
+    /* Dual-Speed Staggered Columns */
+    .dual-col-left,
+    .dual-col-right {
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
     }
-    .scrub-char.lit {
+
+    /* Interactive Circular Touch Loupe (High-Res Magnifier) */
+    #touchLoupe {
+      position: fixed;
+      width: 140px;
+      height: 140px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.5), inset 0 0 0 0.5px rgba(0, 0, 0, 0.45);
+      pointer-events: none;
+      z-index: 60;
+      opacity: 0;
+      transform: translate(-50%, -115%) scale(0.75);
+      transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      background-repeat: no-repeat;
+      filter: grayscale(100%) contrast(1.2);
+    }
+    #touchLoupe.active {
+      opacity: 1;
+      transform: translate(-50%, -115%) scale(1);
+    }
+
+    /* 6. Dual-Track Reverse 35mm Film Strip Marquee */
+    @keyframes filmMarqueeLeft {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+    @keyframes filmMarqueeRight {
+      0% { transform: translate3d(-50%, 0, 0); }
+      100% { transform: translate3d(0, 0, 0); }
+    }
+    .film-track-left {
+      display: flex;
+      width: max-content;
+      animation: filmMarqueeLeft 26s linear infinite;
+    }
+    .film-track-right {
+      display: flex;
+      width: max-content;
+      animation: filmMarqueeRight 28s linear infinite;
+    }
+    .film-track-left:hover,
+    .film-track-left:active,
+    .film-track-right:hover,
+    .film-track-right:active {
+      animation-play-state: paused;
+    }
+    .film-sprockets {
+      background-image: repeating-linear-gradient(
+        to right,
+        transparent 0px,
+        transparent 8px,
+        rgba(255, 255, 255, 0.28) 8px,
+        rgba(255, 255, 255, 0.28) 14px,
+        transparent 14px,
+        transparent 22px
+      );
+    }
+
+    /* 4. Scroll-Scrubbed Word-by-Word Reading Highlight */
+    .scrub-word {
+      color: #CCCCCC;
+      transition: color 0.18s ease-out;
+      display: inline-block;
+    }
+    .scrub-word.lit {
       color: #000000;
     }
 
-    /* Signature SVG Path Draw */
-    .sig-path {
-      stroke-dasharray: 420;
-      stroke-dashoffset: 420;
-      transition: stroke-dashoffset 2.1s cubic-bezier(0.22, 1, 0.36, 1);
+    /* Live Fountain-Pen Handwriting Signature SVG Stroke */
+    .sig-stroke {
+      stroke-dasharray: 680;
+      stroke-dashoffset: 680;
+      transition: stroke-dashoffset 2.4s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .sig-drawn .sig-path {
+    .sig-stroke-sub {
+      stroke-dasharray: 520;
+      stroke-dashoffset: 520;
+      transition: stroke-dashoffset 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.55s;
+    }
+    .sig-drawn .sig-stroke,
+    .sig-drawn .sig-stroke-sub {
       stroke-dashoffset: 0;
+    }
+
+    /* 7. Mechanical Split-Flap / Flip Countdown Digits */
+    .flip-box {
+      position: relative;
+      background-color: #000000;
+      color: #FFFFFF;
+      border-radius: 14px;
+      padding: 12px 6px;
+      overflow: hidden;
+      perspective: 600px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    }
+    .flip-box::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 0.5px;
+      background-color: rgba(255, 255, 255, 0.22);
+      pointer-events: none;
+    }
+    @keyframes digitFlipPulse {
+      0% { transform: rotateX(-75deg); opacity: 0.35; }
+      60% { transform: rotateX(12deg); opacity: 1; }
+      100% { transform: rotateX(0deg); opacity: 1; }
+    }
+    .flip-animate {
+      display: block;
+      transform-origin: center center;
+      animation: digitFlipPulse 0.48s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 7. 3D Perspective Tilt Card + Specular Glass Glare */
+    .tilt-card {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .tilt-glare {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      background: radial-gradient(
+        circle at var(--glare-x, 50%) var(--glare-y, 50%),
+        rgba(255, 255, 255, 0.65) 0%,
+        rgba(255, 255, 255, 0) 65%
+      );
+      mix-blend-mode: soft-light;
+    }
+    .tilt-card.tilting .tilt-glare {
+      opacity: 1;
     }
 
     /* Self-Drawing Architectural Vector Map */
@@ -182,7 +445,7 @@
       transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
     }
     .acc-drawer.open {
-      max-height: 300px;
+      max-height: 360px;
       opacity: 1;
     }
 
@@ -193,15 +456,50 @@
 </head>
 <body class="flex justify-center items-center min-h-[100dvh]">
 
-  <!-- Centered 480px Flagship Mobile Frame -->
+  <!-- =================================================================
+       1. CINEMATIC BLACK CURTAIN PRELOADER (S & Y Monogram + 000% -> 100%)
+  ================================================================== -->
+  <div id="preloaderOverlay" aria-hidden="true">
+    <div class="curtain-panel curtain-top"></div>
+    <div class="curtain-panel curtain-bottom"></div>
+    <div id="preloaderCenter" class="text-center text-purewhite select-none">
+      <div class="font-editorial italic text-[38px] tracking-[0.14em] font-normal">
+        S <span class="text-[24px] text-white/60 mx-1">&amp;</span> Y
+      </div>
+      <div class="mt-4 flex flex-col items-center gap-2">
+        <div class="w-28 h-[0.5px] bg-white/20 overflow-hidden">
+          <div id="preloaderLine" class="h-full bg-purewhite w-0 transition-[width] duration-75"></div>
+        </div>
+        <span id="preloaderPercent" class="font-editorial text-[12px] tracking-[0.28em] text-white/75 tabular-nums">
+          000%
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Centered 480px Exhibition Catalog Mobile Frame -->
   <div class="relative w-full max-w-[480px] h-[100dvh] bg-purewhite shadow-[0_0_90px_rgba(0,0,0,0.95)] overflow-hidden border-x border-neutral-800">
 
-    <!-- Subtle Print Paper Grain Overlay -->
+    <!-- 3. Fine Paper Film Grain (3%) & 0.5px Architectural Hairline Grid -->
     <div class="film-grain" aria-hidden="true"></div>
+    <div class="arch-grid-lines" aria-hidden="true"></div>
 
-    <!-- Top Thin Reading Progress Indicator -->
+    <!-- Interactive Touch Loupe Lens -->
+    <div id="touchLoupe" aria-hidden="true"></div>
+
+    <!-- Top Thin Reading Progress Bar -->
     <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] h-[2px] bg-transparent z-50 pointer-events-none">
       <div id="globalProgressBar" class="h-full bg-purewhite mix-blend-difference w-0 transition-[width] duration-75"></div>
+    </div>
+
+    <!-- 2. Pinned Sticky Top Navigation Bar & Kinetic Scaling Masthead -->
+    <header id="stickyNavHeader" aria-hidden="true"></header>
+    <div
+      id="kineticMasthead"
+      class="font-editorial tracking-[0.04em] text-purewhite select-none text-center"
+      style="top: 112px; font-size: 38px; transform: translate3d(-50%, 0, 0) scale(1);"
+    >
+      DAEHEE <span class="italic font-normal opacity-80">&amp;</span> YOOJEONG
     </div>
 
     <!-- Floating Minimal Ambient BGM Toggle (Top-Right, Muted by Default) -->
@@ -210,7 +508,7 @@
       type="button"
       onclick="toggleAmbientBGM()"
       aria-label="배경음악 켜기/끄기"
-      class="fixed top-5 right-5 sm:right-[calc(50%-220px)] z-40 w-9 h-9 rounded-full bg-black/45 hover:bg-black/75 backdrop-blur-md border border-white/25 flex items-center justify-center gap-[2.5px] transition-all duration-300"
+      class="fixed top-2.5 right-6 sm:right-[calc(50%-216px)] z-45 w-9 h-9 rounded-full bg-black/55 hover:bg-black/85 backdrop-blur-md border border-white/25 flex items-center justify-center gap-[2.5px] transition-all duration-300"
     >
       <span class="eq-bar w-[1.5px] h-3 bg-purewhite rounded-full"></span>
       <span class="eq-bar w-[1.5px] h-3 bg-purewhite rounded-full"></span>
@@ -218,14 +516,14 @@
       <span class="eq-bar w-[1.5px] h-3 bg-purewhite rounded-full"></span>
     </button>
 
-    <!-- Main Smooth Vertical Scroll Viewport -->
+    <!-- Main Vertical Editorial Scroll Viewport -->
     <div id="appScroll">
 
       <!-- =================================================================
-           1. HERO COVER (Pure Minimalist Portrait + Scroll-Driven Zoom & Split)
+           HERO COVER (Full-Bleed Monochrome Portrait + Kinetic Masthead)
            * 실제 메인 커버 사진 파일로 교체 시 아래 img의 src만 수정하세요 (예: src="cover.jpg")
       ================================================================== -->
-      <section id="heroTrack" class="relative h-[165dvh] bg-pureblack">
+      <section id="heroTrack" class="relative h-[145dvh] bg-pureblack">
         <div class="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-between text-purewhite">
           
           <!-- Full-Bleed Monochrome Portrait -->
@@ -235,28 +533,24 @@
               src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1100&q=85"
               onerror="this.src='https://placehold.co/900x1600/000000/FFFFFF?text=SEO+DAEHEE+%26+PARK+YOOJEONG'"
               alt="서대희 & 박유정 메인 화보"
-              class="gpu-layer w-full h-full object-cover object-center grayscale contrast-[1.15] scale-100"
+              class="w-full h-full object-cover object-center grayscale contrast-[1.16]"
             />
-            <div class="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/80"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/80"></div>
           </div>
 
           <!-- Top Minimal Date Stamp -->
-          <div id="heroTopDate" class="gpu-layer relative z-10 px-7 pt-7">
-            <span class="font-editorial italic text-[15px] tracking-[0.18em] text-white/90">
+          <div id="heroTopDate" class="gpu-layer relative z-10 px-8 pt-4">
+            <span class="font-editorial italic text-[14px] tracking-[0.22em] text-white/85">
               2027. 05. 08
             </span>
           </div>
 
-          <!-- Bottom Typography with Split Scroll Motion -->
-          <div class="relative z-10 px-7 pb-11">
-            <h1 class="font-editorial text-[42px] sm:text-[48px] leading-[1.02] tracking-[0.02em] font-normal select-none">
-              <span id="heroTitleLeft" class="gpu-layer block">SEO DAEHEE</span>
-              <span id="heroTitleRight" class="gpu-layer block text-right mt-1">
-                <span class="italic text-[34px] text-white/80 mr-2">&amp;</span>PARK YOOJEONG
-              </span>
-            </h1>
-
-            <div id="heroBottomMeta" class="gpu-layer mt-7 pt-4 border-t border-white/20 flex items-center justify-between text-[12px] text-white/85">
+          <!-- Bottom Editorial Subtitle & Wedding Time -->
+          <div id="heroBottomMeta" class="gpu-layer relative z-10 px-8 pb-11">
+            <p class="font-editorial italic text-[20px] tracking-[0.06em] text-white/90 mb-3">
+              Seo Daehee &amp; Park Yoojeong
+            </p>
+            <div class="pt-4 border-t border-white/25 flex items-center justify-between text-[12px] text-white/85">
               <span class="font-serifKr tracking-[0.06em]">서대희 · 박유정 결혼합니다</span>
               <span class="font-editorial italic text-[14px] tracking-[0.12em]">1:00 PM</span>
             </div>
@@ -264,52 +558,71 @@
         </div>
       </section>
 
+      <!-- Architectural Hairline Divider with Corner Crosshairs -->
+      <div class="crosshair-divider" aria-hidden="true"></div>
+
       <!-- =================================================================
-           2. INVITATION STATEMENT (Scroll-Scrubbed Text Reveal + Signature SVG)
+           4. SCROLL-SCRUBBED WORD HIGHLIGHT, SIGNATURE & FAMILY LINEAGE
       ================================================================== -->
-      <section id="storySection" class="bg-purewhite text-pureblack px-8 pt-28 pb-24">
-        <div class="max-w-[340px] mx-auto text-center">
+      <section id="storySection" class="bg-purewhite text-pureblack px-9 pt-28 pb-24">
+        <div class="max-w-[330px] mx-auto text-center">
           <p class="font-editorial italic text-[19px] text-mutedgray mb-9">
             “Two lives, one quiet rhythm.”
           </p>
 
-          <!-- Scroll-Scrubbed Illuminating Korean Message -->
+          <!-- Scroll-Scrubbed Word-by-Word Illuminating Invitation Verse -->
           <div
             id="scrubParagraph"
-            class="font-serifKr text-[16.5px] sm:text-[17.5px] leading-[2.45] font-normal tracking-[0.01em] break-keep"
+            class="font-serifKr text-[17px] sm:text-[18px] leading-[2.45] font-normal tracking-[0.01em] break-keep"
           >
             서로의 계절이 되어주기로 약속한 날,<br />
             가장 고요하고 빛나는 순간에<br />
             소중한 분들을 초대합니다.
           </div>
 
-          <!-- Minimalist Handwritten-Style Vector Signature -->
+          <!-- Live Fountain-Pen Handwriting Signature SVG ('Daehee & Yoojeong') -->
           <div id="signatureBox" class="mt-11 flex justify-center">
-            <svg viewBox="0 0 220 56" class="w-40 h-auto overflow-visible" aria-hidden="true">
+            <svg viewBox="0 0 280 74" class="w-52 h-auto overflow-visible" aria-label="Daehee and Yoojeong Signature">
               <path
-                class="sig-path"
-                d="M18 36 C28 14, 44 12, 42 32 C40 46, 56 22, 68 26 C76 28, 72 40, 84 36 C96 32, 108 16, 114 28 C118 38, 132 22, 144 30 C154 36, 168 18, 182 28 C190 34, 198 31, 204 29"
+                class="sig-stroke"
+                d="M22 38 C24 14, 48 10, 46 34 C44 48, 22 46, 26 32 C34 26, 54 34, 62 28 C68 23, 60 38, 70 35 C78 32, 86 22, 92 32 C96 38, 108 14, 112 34 C114 40, 124 26, 132 32 C140 37, 152 24, 158 32 C164 38, 178 24, 172 18 C166 14, 162 36, 176 38 C184 39, 192 31, 198 28"
                 fill="none"
                 stroke="#000000"
-                stroke-width="1.25"
+                stroke-width="1.15"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                class="sig-stroke-sub"
+                d="M96 50 C102 60, 112 58, 118 48 C114 66, 102 72, 98 66 C108 58, 124 56, 132 58 C138 60, 144 54, 150 58 C156 61, 164 52, 168 62 C170 68, 160 72, 158 66 C164 58, 176 56, 184 58 C192 60, 200 54, 208 58 C216 61, 226 53, 234 59 C240 64, 248 58, 256 56"
+                fill="none"
+                stroke="#000000"
+                stroke-width="1.1"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
             </svg>
           </div>
 
-          <!-- Couple Names & Hosts Contact Sheet Trigger -->
+          <!-- Family Lineage & Hosts Contact Sheet Trigger -->
           <div class="mt-10 pt-8 border-t border-hairline">
-            <div class="flex items-center justify-center gap-4 font-serifKr text-[15px] tracking-[0.12em]">
-              <span>신랑 <strong class="font-medium">서대희</strong></span>
-              <span class="font-editorial italic text-mutedgray">&amp;</span>
-              <span>신부 <strong class="font-medium">박유정</strong></span>
+            <div class="space-y-2.5 font-serifKr text-[15px] tracking-[0.06em] text-pureblack">
+              <p>
+                <span class="font-medium">서영삼 · 윤성숙</span>
+                <span class="text-[12.5px] text-mutedgray mx-1.5">의 장남</span>
+                <span class="font-medium">대희</span>
+              </p>
+              <p>
+                <span class="font-medium">박현철 · 조현주</span>
+                <span class="text-[12.5px] text-mutedgray mx-1.5">의 차녀</span>
+                <span class="font-medium">유정</span>
+              </p>
             </div>
 
             <button
               type="button"
               onclick="openHostsModal()"
-              class="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-applegray hover:bg-pureblack hover:text-purewhite text-[11.5px] tracking-[0.06em] text-pureblack transition-colors duration-300"
+              class="mt-7 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-applegray hover:bg-pureblack hover:text-purewhite text-[11.5px] tracking-[0.06em] text-pureblack transition-colors duration-300"
             >
               <span>혼주 연락처 보기</span>
               <span class="text-[10px]">↗</span>
@@ -318,33 +631,36 @@
         </div>
       </section>
 
+      <!-- Architectural Hairline Divider with Corner Crosshairs -->
+      <div class="crosshair-divider" aria-hidden="true"></div>
+
       <!-- =================================================================
-           3. NATURAL VERTICAL EDITORIAL PHOTOBOOK (Asymmetrical Rhythm)
+           5 & 6. EDITORIAL SHUTTER REVEAL, DUAL-SPEED PARALLAX & DUAL MARQUEE
            * 실제 스냅 사진 교체 시 각 img의 src를 photo1.jpg ~ photo5.jpg로 바꾸세요.
       ================================================================== -->
-      <section class="bg-purewhite text-pureblack pb-28">
+      <section id="lookbookSection" class="bg-purewhite text-pureblack pt-14 pb-24 overflow-hidden">
         
-        <!-- Frame 01: Full-Bleed Architectural Portrait -->
-        <figure class="reveal-frame w-full mb-10 cursor-pointer group" onclick="openLightbox(0)">
-          <div class="w-full aspect-[4/5] overflow-hidden bg-applegray">
+        <!-- Frame 01: Full-Bleed Accordion Shutter Portrait -->
+        <figure class="mb-14 cursor-pointer group" onclick="openLightbox(0)">
+          <div class="shutter-frame w-full aspect-[4/5] bg-applegray loupe-target">
             <img
               src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85"
               onerror="this.src='https://placehold.co/800x1000/141414/FFFFFF?text=PORTRAIT+01'"
               alt="웨딩 화보 1"
-              class="bw-editorial-photo w-full h-full object-cover group-hover:scale-[1.03]"
+              class="shutter-photo w-full h-full object-cover"
             />
           </div>
         </figure>
 
-        <!-- Frame 02 & 03: Asymmetrical Staggered 2-Column Editorial Spread -->
-        <div class="px-6 grid grid-cols-2 gap-4 items-start mb-12">
-          <figure class="reveal-frame cursor-pointer group" onclick="openLightbox(1)">
-            <div class="w-full aspect-[3/4] overflow-hidden rounded-xl bg-applegray">
+        <!-- Frame 02 & 03: Dual-Speed Contrasting Vertical Parallax 2-Column Spread -->
+        <div id="dualGrid" class="px-8 grid grid-cols-2 gap-4 items-start mb-16">
+          <figure id="dualColLeft" class="dual-col-left cursor-pointer group" onclick="openLightbox(1)">
+            <div class="shutter-frame w-full aspect-[3/4] rounded-xl bg-applegray loupe-target">
               <img
                 src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=85"
                 onerror="this.src='https://placehold.co/600x800/141414/FFFFFF?text=PORTRAIT+02'"
                 alt="웨딩 화보 2"
-                class="bw-editorial-photo w-full h-full object-cover group-hover:scale-[1.04]"
+                class="shutter-photo w-full h-full object-cover"
               />
             </div>
             <figcaption class="mt-2.5 font-editorial italic text-[13px] text-mutedgray">
@@ -352,14 +668,14 @@
             </figcaption>
           </figure>
 
-          <!-- Vertical Offset Right Column -->
-          <figure class="reveal-frame mt-14 cursor-pointer group" onclick="openLightbox(2)">
-            <div class="w-full aspect-[3/4] overflow-hidden rounded-xl bg-applegray">
+          <!-- Contrasting Speed Right Column -->
+          <figure id="dualColRight" class="dual-col-right mt-14 cursor-pointer group" onclick="openLightbox(2)">
+            <div class="shutter-frame w-full aspect-[3/4] rounded-xl bg-applegray loupe-target">
               <img
                 src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=800&q=85"
                 onerror="this.src='https://placehold.co/600x800/141414/FFFFFF?text=PORTRAIT+03'"
                 alt="웨딩 화보 3"
-                class="bw-editorial-photo w-full h-full object-cover group-hover:scale-[1.04]"
+                class="shutter-photo w-full h-full object-cover"
               />
             </div>
             <figcaption class="mt-2.5 text-right font-editorial italic text-[13px] text-mutedgray">
@@ -368,43 +684,135 @@
           </figure>
         </div>
 
-        <!-- Frame 04: Wide Cinema Ratio Frame -->
-        <figure class="reveal-frame px-6 mb-12 cursor-pointer group" onclick="openLightbox(3)">
-          <div class="w-full aspect-[16/10] overflow-hidden rounded-2xl bg-applegray">
+        <!-- Frame 04: Wide Cinema Ratio Shutter Frame -->
+        <figure class="px-8 mb-14 cursor-pointer group" onclick="openLightbox(3)">
+          <div class="shutter-frame w-full aspect-[16/10] rounded-2xl bg-applegray loupe-target">
             <img
               src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1000&q=85"
               onerror="this.src='https://placehold.co/1000x625/141414/FFFFFF?text=CINEMA+FRAME'"
               alt="웨딩 화보 4"
-              class="bw-editorial-photo w-full h-full object-cover group-hover:scale-[1.03]"
+              class="shutter-photo w-full h-full object-cover"
             />
           </div>
         </figure>
 
         <!-- Frame 05: Centered Editorial Portrait -->
-        <figure class="reveal-frame px-12 cursor-pointer group" onclick="openLightbox(4)">
-          <div class="w-full aspect-[3/4] overflow-hidden rounded-2xl bg-applegray">
+        <figure class="px-14 mb-16 cursor-pointer group" onclick="openLightbox(4)">
+          <div class="shutter-frame w-full aspect-[3/4] rounded-2xl bg-applegray loupe-target">
             <img
               src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=900&q=85"
               onerror="this.src='https://placehold.co/600x800/141414/FFFFFF?text=PORTRAIT+05'"
               alt="웨딩 화보 5"
-              class="bw-editorial-photo w-full h-full object-cover group-hover:scale-[1.03]"
+              class="shutter-photo w-full h-full object-cover"
             />
           </div>
-          <figcaption class="mt-3 text-center text-[11px] text-mutedgray tracking-[0.04em]">
-            사진을 터치하면 크게 보실 수 있습니다
+          <figcaption class="mt-3.5 text-center text-[11px] text-mutedgray tracking-[0.04em]">
+            화보 위를 길게 누르면 돋보기로 확대됩니다
           </figcaption>
         </figure>
 
+        <!-- 6. Dual-Track Reverse 35mm Film Strip Marquee & Kinetic Background Watermark -->
+        <div id="marqueeShowcase" class="relative py-8 bg-pureblack overflow-hidden border-y border-neutral-800 select-none">
+          
+          <!-- Oversized Lateral Kinetic Watermark -->
+          <div
+            id="kineticWatermark"
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-0 flex items-center justify-center whitespace-nowrap font-editorial italic text-[68px] tracking-[0.08em] text-white/[0.08] will-change-transform"
+          >
+            SEO DAEHEE · PARK YOOJEONG · SEO DAEHEE · PARK YOOJEONG
+          </div>
+
+          <div class="h-2.5 w-full film-sprockets mb-2.5 relative z-10"></div>
+
+          <!-- Top Film Track (Moves Left) -->
+          <div class="film-track-left gap-3 px-2 relative z-10">
+            <div onclick="openLightbox(0)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=75" alt="필름 컷 1" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(1)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=75" alt="필름 컷 2" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(2)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=400&q=75" alt="필름 컷 3" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(3)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=400&q=75" alt="필름 컷 4" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(4)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=75" alt="필름 컷 5" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <!-- Duplicate Set -->
+            <div onclick="openLightbox(0)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=75" alt="필름 컷 1" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(1)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=75" alt="필름 컷 2" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(2)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=400&q=75" alt="필름 컷 3" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(3)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=400&q=75" alt="필름 컷 4" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(4)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=75" alt="필름 컷 5" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+          </div>
+
+          <div class="h-2.5 w-full film-sprockets my-2.5 relative z-10"></div>
+
+          <!-- Bottom Film Track (Moves Right in Reverse) -->
+          <div class="film-track-right gap-3 px-2 relative z-10">
+            <div onclick="openLightbox(4)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=75" alt="필름 컷 5" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(3)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=400&q=75" alt="필름 컷 4" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(2)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=400&q=75" alt="필름 컷 3" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(1)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=75" alt="필름 컷 2" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(0)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=75" alt="필름 컷 1" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <!-- Duplicate Set -->
+            <div onclick="openLightbox(4)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=400&q=75" alt="필름 컷 5" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(3)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=400&q=75" alt="필름 컷 4" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(2)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=400&q=75" alt="필름 컷 3" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(1)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=75" alt="필름 컷 2" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+            <div onclick="openLightbox(0)" class="w-28 h-20 shrink-0 overflow-hidden cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=75" alt="필름 컷 1" class="w-full h-full object-cover grayscale contrast-125" />
+            </div>
+          </div>
+
+          <div class="h-2.5 w-full film-sprockets mt-2.5 relative z-10"></div>
+        </div>
+
       </section>
 
+      <!-- Architectural Hairline Divider with Corner Crosshairs -->
+      <div class="crosshair-divider" aria-hidden="true"></div>
+
       <!-- =================================================================
-           4. DATE, MAY 2027 CALENDAR & ONE-CLICK .ICS CALENDAR SAVE
+           7. MECHANICAL FLIP D-DAY COUNTER & 3D PERSPECTIVE TILT DATE CARD
       ================================================================== -->
-      <section class="bg-applegray text-pureblack px-7 py-24">
-        <div class="max-w-[360px] mx-auto">
+      <section class="bg-applegray text-pureblack px-8 py-24">
+        <div class="max-w-[350px] mx-auto">
           
           <div class="text-center">
-            <p class="font-editorial italic text-[17px] text-mutedgray">Saturday, May 8</p>
+            <p class="font-editorial italic text-[17px] text-mutedgray">Saturday, May 8 · 13:00</p>
             <h2 class="font-editorial text-[50px] sm:text-[56px] leading-none tracking-[-0.01em] text-pureblack mt-1">
               2027.05.08
             </h2>
@@ -413,8 +821,9 @@
             </p>
           </div>
 
-          <!-- Minimalist Monochrome Calendar Card (May 2027 starts Saturday May 1) -->
-          <div class="mt-9 rounded-3xl bg-purewhite border border-hairline p-6 shadow-[0_12px_32px_rgba(0,0,0,0.03)]">
+          <!-- 3D Perspective Tilt + Specular Glare Monochrome Calendar Card -->
+          <div class="tilt-card mt-9 rounded-3xl bg-purewhite border border-hairline p-6 shadow-[0_14px_34px_rgba(0,0,0,0.04)]">
+            <div class="tilt-glare"></div>
             <div class="grid grid-cols-7 text-center text-[10px] tracking-[0.18em] uppercase text-mutedgray pb-3 border-b border-hairline">
               <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span class="text-pureblack font-semibold">S</span>
             </div>
@@ -434,23 +843,23 @@
             </div>
           </div>
 
-          <!-- Live Tabular Countdown -->
-          <div class="mt-8 grid grid-cols-4 text-center tabular-nums">
-            <div>
-              <span id="cdDays" class="block font-editorial text-[28px] text-pureblack">000</span>
-              <span class="text-[9.5px] tracking-[0.2em] uppercase text-mutedgray">DAYS</span>
+          <!-- Mechanical Split-Flap / Flip Countdown -->
+          <div class="mt-8 grid grid-cols-4 gap-2.5 text-center tabular-nums">
+            <div class="flip-box">
+              <span id="cdDays" class="font-editorial text-[26px] leading-none">000</span>
+              <span class="block mt-1.5 text-[8.5px] tracking-[0.2em] uppercase text-white/65">DAYS</span>
             </div>
-            <div>
-              <span id="cdHours" class="block font-editorial text-[28px] text-pureblack">00</span>
-              <span class="text-[9.5px] tracking-[0.2em] uppercase text-mutedgray">HRS</span>
+            <div class="flip-box">
+              <span id="cdHours" class="font-editorial text-[26px] leading-none">00</span>
+              <span class="block mt-1.5 text-[8.5px] tracking-[0.2em] uppercase text-white/65">HRS</span>
             </div>
-            <div>
-              <span id="cdMins" class="block font-editorial text-[28px] text-pureblack">00</span>
-              <span class="text-[9.5px] tracking-[0.2em] uppercase text-mutedgray">MIN</span>
+            <div class="flip-box">
+              <span id="cdMins" class="font-editorial text-[26px] leading-none">00</span>
+              <span class="block mt-1.5 text-[8.5px] tracking-[0.2em] uppercase text-white/65">MIN</span>
             </div>
-            <div>
-              <span id="cdSecs" class="block font-editorial text-[28px] text-pureblack">00</span>
-              <span class="text-[9.5px] tracking-[0.2em] uppercase text-mutedgray">SEC</span>
+            <div class="flip-box">
+              <span id="cdSecs" class="font-editorial text-[26px] leading-none">00</span>
+              <span class="block mt-1.5 text-[8.5px] tracking-[0.2em] uppercase text-white/65">SEC</span>
             </div>
           </div>
 
@@ -468,11 +877,14 @@
         </div>
       </section>
 
+      <!-- Architectural Hairline Divider with Corner Crosshairs -->
+      <div class="crosshair-divider" aria-hidden="true"></div>
+
       <!-- =================================================================
-           5. LOCATION, ARCHITECTURAL VECTOR MAP & PARKING SUMMARY
+           LOCATION, ARCHITECTURAL VECTOR MAP & PARKING SUMMARY
       ================================================================== -->
-      <section class="bg-purewhite text-pureblack px-7 py-24">
-        <div class="max-w-[380px] mx-auto">
+      <section class="bg-purewhite text-pureblack px-8 py-24">
+        <div class="max-w-[360px] mx-auto">
           
           <div class="text-center mb-7">
             <p class="font-editorial italic text-[17px] text-mutedgray">Location</p>
@@ -526,7 +938,7 @@
           <div class="mt-4 rounded-2xl bg-applegray px-4 py-3.5 flex items-center justify-between gap-3">
             <div class="text-left">
               <p class="text-[12px] font-medium text-pureblack">서구 풍서좌로 269 · 1층 아모르홀</p>
-              <p class="text-[11px] text-mutedgray mt-0.5">지상·지하 전용 주차장 이용 가능 (2시간 무료)</p>
+              <p class="text-[11px] text-mutedgray mt-0.5">지상·지하 주차장 2시간 무료 주차</p>
             </div>
             <button
               type="button"
@@ -567,12 +979,15 @@
         </div>
       </section>
 
+      <!-- Architectural Hairline Divider with Corner Crosshairs -->
+      <div class="crosshair-divider" aria-hidden="true"></div>
+
       <!-- =================================================================
-           6. ACCOUNT ACCORDIONS & CLOSING SHARE
-           * 아래 계좌번호 및 예금주 성함을 실제 정보로 수정해 사용하세요.
+           ACCOUNT ACCORDIONS (GROOM & BRIDE SIDES) & CLOSING SHARE
+           * 아래 계좌번호를 실제 계좌번호로 수정해 사용하세요.
       ================================================================== -->
-      <section class="bg-applegray text-pureblack px-7 pt-22 pb-20">
-        <div class="max-w-[380px] mx-auto">
+      <section class="bg-applegray text-pureblack px-8 pt-22 pb-20">
+        <div class="max-w-[360px] mx-auto">
           
           <div class="text-center mb-8">
             <p class="font-editorial italic text-[17px] text-mutedgray">With Gratitude</p>
@@ -582,8 +997,9 @@
           </div>
 
           <div class="space-y-3">
-            <!-- Groom Side Account Accordion -->
-            <div class="rounded-2xl border border-hairline bg-purewhite overflow-hidden">
+            <!-- Groom Side Account Accordion (서대희, 서영삼, 윤성숙) -->
+            <div class="tilt-card rounded-2xl border border-hairline bg-purewhite overflow-hidden">
+              <div class="tilt-glare"></div>
               <button
                 type="button"
                 onclick="toggleAccordion('groomAcc', this)"
@@ -609,12 +1025,25 @@
                   </div>
                   <div class="flex items-center justify-between pt-2.5 border-t border-hairline/70">
                     <div>
-                      <span class="text-mutedgray text-[11px] block">혼주 (신랑측)</span>
+                      <span class="text-mutedgray text-[11px] block">아버지 서영삼</span>
                       <span class="font-medium text-pureblack">국민 042102-04-192837</span>
                     </div>
                     <button
                       type="button"
-                      onclick="copyText('042102-04-192837', '신랑측 혼주 계좌번호가 복사되었습니다.')"
+                      onclick="copyText('042102-04-192837', '아버지 서영삼 계좌번호가 복사되었습니다.')"
+                      class="px-3.5 py-1.5 rounded-full border border-pureblack text-pureblack text-[11px]"
+                    >
+                      복사
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between pt-2.5 border-t border-hairline/70">
+                    <div>
+                      <span class="text-mutedgray text-[11px] block">어머니 윤성숙</span>
+                      <span class="font-medium text-pureblack">농협 352-0841-2910-43</span>
+                    </div>
+                    <button
+                      type="button"
+                      onclick="copyText('352-0841-2910-43', '어머니 윤성숙 계좌번호가 복사되었습니다.')"
                       class="px-3.5 py-1.5 rounded-full border border-pureblack text-pureblack text-[11px]"
                     >
                       복사
@@ -624,8 +1053,9 @@
               </div>
             </div>
 
-            <!-- Bride Side Account Accordion -->
-            <div class="rounded-2xl border border-hairline bg-purewhite overflow-hidden">
+            <!-- Bride Side Account Accordion (박유정, 박현철, 조현주) -->
+            <div class="tilt-card rounded-2xl border border-hairline bg-purewhite overflow-hidden">
+              <div class="tilt-glare"></div>
               <button
                 type="button"
                 onclick="toggleAccordion('brideAcc', this)"
@@ -651,12 +1081,25 @@
                   </div>
                   <div class="flex items-center justify-between pt-2.5 border-t border-hairline/70">
                     <div>
-                      <span class="text-mutedgray text-[11px] block">혼주 (신부측)</span>
+                      <span class="text-mutedgray text-[11px] block">아버지 박현철</span>
                       <span class="font-medium text-pureblack">하나 381-910284-72105</span>
                     </div>
                     <button
                       type="button"
-                      onclick="copyText('381-910284-72105', '신부측 혼주 계좌번호가 복사되었습니다.')"
+                      onclick="copyText('381-910284-72105', '아버지 박현철 계좌번호가 복사되었습니다.')"
+                      class="px-3.5 py-1.5 rounded-full border border-pureblack text-pureblack text-[11px]"
+                    >
+                      복사
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between pt-2.5 border-t border-hairline/70">
+                    <div>
+                      <span class="text-mutedgray text-[11px] block">어머니 조현주</span>
+                      <span class="font-medium text-pureblack">신한 110-392-847192</span>
+                    </div>
+                    <button
+                      type="button"
+                      onclick="copyText('110-392-847192', '어머니 조현주 계좌번호가 복사되었습니다.')"
                       class="px-3.5 py-1.5 rounded-full border border-pureblack text-pureblack text-[11px]"
                     >
                       복사
@@ -688,8 +1131,8 @@
   </div>
 
   <!-- =================================================================
-       MODAL 1: HOSTS & CONTACT BOTTOM SHEET
-       * 아래 혼주 성함과 전화번호를 실제 연락처로 수정해 사용하세요.
+       MODAL 1: HOSTS & CONTACT BOTTOM SHEET (CALL & SMS)
+       * 아래 혼주 전화번호를 실제 연락처로 수정해 사용하세요.
   ================================================================== -->
   <div id="hostsModal" onclick="closeHostsModal()" class="fixed inset-0 z-50 hidden bg-black/65 backdrop-blur-xs items-end justify-center">
     <div onclick="event.stopPropagation()" class="w-full max-w-[480px] bg-purewhite rounded-t-3xl p-7 pb-9 border-t border-hairline shadow-2xl">
@@ -700,35 +1143,53 @@
       </div>
 
       <div class="mt-5 grid grid-cols-2 gap-5 text-[13px] font-serifKr">
-        <div class="space-y-3">
+        <div class="space-y-3.5">
           <p class="text-[10.5px] tracking-[0.16em] uppercase text-mutedgray font-sansKr">신랑측</p>
           <div class="flex items-center justify-between">
             <span>신랑 서대희</span>
-            <a href="tel:010-1234-5678" class="text-[11px] underline underline-offset-4 text-pureblack">전화</a>
+            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
+              <a href="tel:010-1234-5678" class="underline underline-offset-4 text-pureblack">전화</a>
+              <a href="sms:010-1234-5678" class="text-mutedgray hover:text-pureblack">문자</a>
+            </div>
           </div>
           <div class="flex items-center justify-between">
             <span>부 서영삼</span>
-            <a href="tel:010-2345-6789" class="text-[11px] underline underline-offset-4 text-pureblack">전화</a>
+            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
+              <a href="tel:010-2345-6789" class="underline underline-offset-4 text-pureblack">전화</a>
+              <a href="sms:010-2345-6789" class="text-mutedgray hover:text-pureblack">문자</a>
+            </div>
           </div>
           <div class="flex items-center justify-between">
             <span>모 윤성숙</span>
-            <a href="tel:010-3456-7890" class="text-[11px] underline underline-offset-4 text-pureblack">전화</a>
+            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
+              <a href="tel:010-3456-7890" class="underline underline-offset-4 text-pureblack">전화</a>
+              <a href="sms:010-3456-7890" class="text-mutedgray hover:text-pureblack">문자</a>
+            </div>
           </div>
         </div>
 
-        <div class="space-y-3 border-l border-hairline pl-5">
+        <div class="space-y-3.5 border-l border-hairline pl-5">
           <p class="text-[10.5px] tracking-[0.16em] uppercase text-mutedgray font-sansKr">신부측</p>
           <div class="flex items-center justify-between">
             <span>신부 박유정</span>
-            <a href="tel:010-9876-5432" class="text-[11px] underline underline-offset-4 text-pureblack">전화</a>
+            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
+              <a href="tel:010-9876-5432" class="underline underline-offset-4 text-pureblack">전화</a>
+              <a href="sms:010-9876-5432" class="text-mutedgray hover:text-pureblack">문자</a>
+            </div>
           </div>
           <div class="flex items-center justify-between">
             <span>부 박현철</span>
-            <a href="tel:010-8765-4321" class="text-[11px] underline underline-offset-4 text-pureblack">전화</a>
+            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
+              <a href="tel:010-8765-4321" class="underline underline-offset-4 text-pureblack">전화</a>
+              <a href="sms:010-8765-4321" class="text-mutedgray hover:text-pureblack">문자</a>
+            </div>
           </div>
           <div class="flex items-center justify-between">
             <span>모 조현주</span>
-            <a href="tel:010-7654-3210" class="text-[11px] underline underline-offset-4 text-pureblack">전화</a>
+            <div class="flex items-center gap-2.5 text-[11px] font-sansKr">
+              <a href="tel:010-7654-3210" class="underline underline-offset-4 text-pureblack">전화</a>
+              <a href="sms:010-7654-3210" class="text-mutedgray hover:text-pureblack">문자</a>
+            </div>
           </div>
         </div>
       </div>
@@ -768,37 +1229,78 @@
     const appScroll = document.getElementById('appScroll');
     const globalProgressBar = document.getElementById('globalProgressBar');
 
-    // Hero Elements
+    // Hero & Kinetic Masthead Elements
     const heroTrack = document.getElementById('heroTrack');
     const heroImg = document.getElementById('heroImg');
     const heroTopDate = document.getElementById('heroTopDate');
-    const heroTitleLeft = document.getElementById('heroTitleLeft');
-    const heroTitleRight = document.getElementById('heroTitleRight');
     const heroBottomMeta = document.getElementById('heroBottomMeta');
+    const kineticMasthead = document.getElementById('kineticMasthead');
+    const stickyNavHeader = document.getElementById('stickyNavHeader');
 
     // Story Elements
     const storySection = document.getElementById('storySection');
     const scrubParagraph = document.getElementById('scrubParagraph');
     const signatureBox = document.getElementById('signatureBox');
 
-    // Split Invitation Text into Individual Characters for Smooth Scroll Illumination
-    function initScrubCharacters() {
+    // Dual-Speed Parallax & Kinetic Watermark Elements
+    const dualGrid = document.getElementById('dualGrid');
+    const dualColLeft = document.getElementById('dualColLeft');
+    const dualColRight = document.getElementById('dualColRight');
+    const marqueeShowcase = document.getElementById('marqueeShowcase');
+    const kineticWatermark = document.getElementById('kineticWatermark');
+
+    // 1. Cinematic Black Curtain Preloader Sequence (000% -> 100%)
+    function runCinematicPreloader() {
+      const overlay = document.getElementById('preloaderOverlay');
+      const percentEl = document.getElementById('preloaderPercent');
+      const lineEl = document.getElementById('preloaderLine');
+      let progress = 0;
+
+      const timer = setInterval(() => {
+        progress += Math.floor(Math.random() * 9) + 6;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(timer);
+          percentEl.textContent = '100%';
+          lineEl.style.width = '100%';
+
+          setTimeout(() => {
+            overlay.classList.add('curtain-open');
+            // Zoom-out reveal of hero cover image (1.18 -> 1.0)
+            heroImg.style.transform = 'scale(1)';
+            setTimeout(() => {
+              document.body.classList.add('experience-started');
+              overlay.style.display = 'none';
+            }, 1250);
+          }, 260);
+        } else {
+          percentEl.textContent = `${String(progress).padStart(3, '0')}%`;
+          lineEl.style.width = `${progress}%`;
+        }
+      }, 42);
+    }
+    window.addEventListener('load', runCinematicPreloader);
+
+    // 4. Split Invitation Text into Individual Words for Scroll-Scrubbed Highlight
+    function initScrubWords() {
       const rawHtml = scrubParagraph.innerHTML.trim();
       const lines = rawHtml.split(/<br\s*\/?>/i);
       scrubParagraph.innerHTML = lines
         .map((line) =>
-          Array.from(line.trim())
-            .map((ch) => (ch === ' ' ? ' ' : `<span class="scrub-char">${ch}</span>`))
-            .join('')
+          line
+            .trim()
+            .split(/\s+/)
+            .map((word) => `<span class="scrub-word">${word}</span>`)
+            .join(' ')
         )
         .join('<br />');
     }
-    initScrubCharacters();
-    const scrubChars = document.querySelectorAll('.scrub-char');
+    initScrubWords();
+    const scrubWords = document.querySelectorAll('.scrub-word');
 
     const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 
-    // 60fps Scroll-Driven Motion Handler
+    // 60fps Scroll-Driven Kinetic Motion Handler
     let ticking = false;
     function onScrollFrame() {
       const scrollTop = appScroll.scrollTop;
@@ -810,30 +1312,43 @@
         globalProgressBar.style.width = `${(scrollTop / maxScroll) * 100}%`;
       }
 
-      // 1. Hero Cover Zoom & Typography Split Transition
-      const heroDist = heroTrack.offsetHeight - vh;
-      if (heroDist > 0) {
-        const p = clamp(scrollTop / heroDist, 0, 1);
-        heroImg.style.transform = `scale(${1 + p * 0.2}) translate3d(0, ${p * 30}px, 0)`;
-        heroTopDate.style.opacity = String(clamp(1 - p * 1.5, 0, 1));
-        heroTitleLeft.style.transform = `translate3d(${-p * 85}px, 0, 0)`;
-        heroTitleRight.style.transform = `translate3d(${p * 85}px, 0, 0)`;
-        heroBottomMeta.style.transform = `translate3d(0, ${p * 28}px, 0)`;
+      // 2. Hero Kinetic Masthead (Scale-Down & Pin to Sticky Header)
+      const heroDist = Math.max(1, heroTrack.offsetHeight - vh * 0.45);
+      const pinProgress = clamp(scrollTop / heroDist, 0, 1);
 
-        const fadeOp = String(clamp(1 - p * 1.35, 0, 1));
-        heroTitleLeft.style.opacity = fadeOp;
-        heroTitleRight.style.opacity = fadeOp;
-        heroBottomMeta.style.opacity = fadeOp;
+      const startTop = 104;
+      const endTop = 17;
+      const currentTop = startTop - pinProgress * (startTop - endTop);
+      const currentScale = 1 - pinProgress * 0.56; // 38px -> ~16.7px
+
+      kineticMasthead.style.top = `${currentTop}px`;
+      kineticMasthead.style.transform = `translate3d(-50%, 0, 0) scale(${currentScale})`;
+
+      if (pinProgress >= 0.86) {
+        stickyNavHeader.classList.add('is-pinned');
+        kineticMasthead.style.color = '#000000';
+      } else {
+        stickyNavHeader.classList.remove('is-pinned');
+        kineticMasthead.style.color = '#FFFFFF';
       }
 
-      // 2. Story Section Scrubbed Character Illumination
-      const storyRect = storySection.getBoundingClientRect();
-      const startTrigger = vh * 0.72;
-      const endTrigger = vh * 0.15;
-      const storyProgress = clamp((startTrigger - storyRect.top) / (startTrigger - endTrigger), 0, 1);
-      const litCount = Math.floor(storyProgress * scrubChars.length);
+      // Hero Cover Zoom & Bottom Meta Fade
+      if (document.body.classList.contains('experience-started')) {
+        const coverP = clamp(scrollTop / (heroTrack.offsetHeight - vh), 0, 1);
+        heroImg.style.transform = `scale(${1 + coverP * 0.16}) translate3d(0, ${coverP * 24}px, 0)`;
+        heroTopDate.style.opacity = String(clamp(1 - coverP * 1.8, 0, 1));
+        heroBottomMeta.style.opacity = String(clamp(1 - coverP * 1.4, 0, 1));
+        heroBottomMeta.style.transform = `translate3d(0, ${coverP * 24}px, 0)`;
+      }
 
-      scrubChars.forEach((span, idx) => {
+      // 4. Story Section Word-by-Word Illumination & Fountain-Pen Signature Draw
+      const storyRect = storySection.getBoundingClientRect();
+      const startTrigger = vh * 0.74;
+      const endTrigger = vh * 0.18;
+      const storyProgress = clamp((startTrigger - storyRect.top) / (startTrigger - endTrigger), 0, 1);
+      const litCount = Math.floor(storyProgress * scrubWords.length);
+
+      scrubWords.forEach((span, idx) => {
         if (idx < litCount) {
           span.classList.add('lit');
         } else {
@@ -841,8 +1356,27 @@
         }
       });
 
-      if (storyProgress > 0.78) {
+      if (storyProgress > 0.72) {
         signatureBox.classList.add('sig-drawn');
+      }
+
+      // 5. Dual-Speed Contrasting Vertical Parallax on 2-Column Lookbook
+      if (dualGrid) {
+        const gridRect = dualGrid.getBoundingClientRect();
+        if (gridRect.top < vh && gridRect.bottom > 0) {
+          const norm = (gridRect.top + gridRect.height * 0.5 - vh * 0.5) / vh;
+          dualColLeft.style.transform = `translate3d(0, ${norm * 24}px, 0)`;
+          dualColRight.style.transform = `translate3d(0, ${norm * -34}px, 0)`;
+        }
+      }
+
+      // 6. Lateral Kinetic Watermark Behind Dual-Track Film Marquee
+      if (marqueeShowcase && kineticWatermark) {
+        const mqRect = marqueeShowcase.getBoundingClientRect();
+        if (mqRect.top < vh && mqRect.bottom > 0) {
+          const mqNorm = (mqRect.top - vh * 0.5) / vh;
+          kineticWatermark.style.transform = `translate3d(${mqNorm * 120}px, 0, 0)`;
+        }
       }
 
       ticking = false;
@@ -860,20 +1394,94 @@
     );
     onScrollFrame();
 
-    // 3. Natural Vertical Photobook Reveal Observer
-    const revealObserver = new IntersectionObserver(
+    // 5. Editorial Accordion Shutter Mask Reveal Observer
+    const shutterObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
+            entry.target.classList.add('is-revealed');
           }
         });
       },
-      { root: appScroll, threshold: 0.14 }
+      { root: appScroll, threshold: 0.16 }
     );
-    document.querySelectorAll('.reveal-frame').forEach((el) => revealObserver.observe(el));
+    document.querySelectorAll('.shutter-frame').forEach((el) => shutterObserver.observe(el));
 
-    // 4. Self-Drawing Architectural Vector Map Observer
+    // Interactive Touch Loupe (High-Res Magnifier on Press/Drag)
+    const loupe = document.getElementById('touchLoupe');
+    const loupeTargets = document.querySelectorAll('.loupe-target');
+    let loupeHoldTimer = null;
+    let isLoupeActive = false;
+
+    function updateLoupePosition(target, clientX, clientY) {
+      const img = target.querySelector('img');
+      if (!img) return;
+      const rect = target.getBoundingClientRect();
+      const relX = clamp((clientX - rect.left) / rect.width, 0, 1);
+      const relY = clamp((clientY - rect.top) / rect.height, 0, 1);
+
+      loupe.style.backgroundImage = `url('${img.currentSrc || img.src}')`;
+      loupe.style.backgroundSize = `${rect.width * 2.25}px ${rect.height * 2.25}px`;
+      loupe.style.backgroundPosition = `${relX * 100}% ${relY * 100}%`;
+      loupe.style.left = `${clientX}px`;
+      loupe.style.top = `${clientY}px`;
+    }
+
+    loupeTargets.forEach((target) => {
+      target.addEventListener('pointerdown', (e) => {
+        clearTimeout(loupeHoldTimer);
+        loupeHoldTimer = setTimeout(() => {
+          isLoupeActive = true;
+          updateLoupePosition(target, e.clientX, e.clientY);
+          loupe.classList.add('active');
+        }, 170);
+      });
+
+      target.addEventListener('pointermove', (e) => {
+        if (!isLoupeActive) return;
+        updateLoupePosition(target, e.clientX, e.clientY);
+      });
+
+      const stopLoupe = () => {
+        clearTimeout(loupeHoldTimer);
+        if (isLoupeActive) {
+          isLoupeActive = false;
+          loupe.classList.remove('active');
+        }
+      };
+
+      target.addEventListener('pointerup', stopLoupe);
+      target.addEventListener('pointercancel', stopLoupe);
+      target.addEventListener('pointerleave', stopLoupe);
+    });
+
+    // 7. 3D Perspective Tilt + Specular Glass Glare on Date & Account Cards
+    document.querySelectorAll('.tilt-card').forEach((card) => {
+      const handleMove = (clientX, clientY) => {
+        const rect = card.getBoundingClientRect();
+        const x = clamp((clientX - rect.left) / rect.width, 0, 1);
+        const y = clamp((clientY - rect.top) / rect.height, 0, 1);
+        const rotateX = (0.5 - y) * 9;
+        const rotateY = (x - 0.5) * 11;
+
+        card.classList.add('tilting');
+        card.style.setProperty('--glare-x', `${x * 100}%`);
+        card.style.setProperty('--glare-y', `${y * 100}%`);
+        card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+      };
+
+      const resetTilt = () => {
+        card.classList.remove('tilting');
+        card.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      };
+
+      card.addEventListener('pointermove', (e) => handleMove(e.clientX, e.clientY));
+      card.addEventListener('pointerleave', resetTilt);
+      card.addEventListener('pointerup', resetTilt);
+      card.addEventListener('pointercancel', resetTilt);
+    });
+
+    // Self-Drawing Architectural Vector Map Observer
     const vectorMapBox = document.getElementById('vectorMapBox');
     const mapObserver = new IntersectionObserver(
       (entries) => {
@@ -887,48 +1495,52 @@
     );
     mapObserver.observe(vectorMapBox);
 
-    // 5. Real-Time Countdown to 2027.05.08 13:00 KST
+    // 7. Real-Time Mechanical Split-Flap Countdown to 2027.05.08 13:00 KST
+    const prevCd = { days: '', hours: '', mins: '', secs: '' };
+    function setFlipValue(elId, key, newVal) {
+      if (prevCd[key] === newVal) return;
+      prevCd[key] = newVal;
+      const el = document.getElementById(elId);
+      el.textContent = newVal;
+      el.classList.remove('flip-animate');
+      void el.offsetWidth; // trigger reflow for mechanical flip animation
+      el.classList.add('flip-animate');
+    }
+
     function updateCountdown() {
       const target = new Date('2027-05-08T13:00:00+09:00').getTime();
       const diff = Math.max(0, target - Date.now());
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const mins = Math.floor((diff / (1000 * 60)) % 60);
-      const secs = Math.floor((diff / 1000) % 60);
+      const days = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(3, '0');
+      const hours = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+      const mins = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
+      const secs = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
 
-      document.getElementById('cdDays').textContent = String(days).padStart(3, '0');
-      document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
-      document.getElementById('cdMins').textContent = String(mins).padStart(2, '0');
-      document.getElementById('cdSecs').textContent = String(secs).padStart(2, '0');
+      setFlipValue('cdDays', 'days', days);
+      setFlipValue('cdHours', 'hours', hours);
+      setFlipValue('cdMins', 'mins', mins);
+      setFlipValue('cdSecs', 'secs', secs);
     }
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // 6. One-Click .ics Calendar Event Download
+    // One-Click .ics Calendar Event Download
     function downloadWeddingICS() {
-      const icsLines = [
+      const icsContent = [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
-        'PRODID:-//SEO DAEHEE & PARK YOOJEONG//Wedding Invitation//KO',
-        'CALSCALE:GREGORIAN',
+        'PRODID:-//SeoDaehee & ParkYoojeong//Wedding//KO',
         'BEGIN:VEVENT',
-        'UID:wedding-20270508-daehee-yoojeong@invitation',
-        'DTSTAMP:20261127T000000Z',
         'DTSTART:20270508T040000Z',
         'DTEND:20270508T060000Z',
         'SUMMARY:서대희 ♥ 박유정 결혼식',
         'LOCATION:제이아트컨벤션 1층 아모르홀 (광주전남통합특별시 서구 풍서좌로 269)',
-        'DESCRIPTION:2027년 5월 8일 토요일 오후 1시, 서대희와 박유정의 결혼식에 초대합니다.',
-        'BEGIN:VALARM',
-        'TRIGGER:-PT2H',
-        'ACTION:DISPLAY',
-        'DESCRIPTION:서대희 ♥ 박유정 결혼식 2시간 전입니다.',
-        'END:VALARM',
+        'DESCRIPTION:2027년 5월 8일 토요일 오후 1시 · 제이아트컨벤션 1층 아모르홀',
         'END:VEVENT',
-        'END:VCALENDAR',
-      ];
-      const blob = new Blob([icsLines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+        'END:VCALENDAR'
+      ].join('\r\n');
+
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
@@ -940,38 +1552,40 @@
       showToast('캘린더 일정 파일(.ics)이 저장되었습니다.');
     }
 
-    // 7. Standalone Web Audio API Gentle Ambient Piano Arpeggio (Zero External File Needed)
+    // Minimal Ambient Piano BGM Toggle (Web Audio API)
     let audioCtx = null;
-    let bgmTimer = null;
     let isBgmPlaying = false;
+    let bgmTimer = null;
     let noteStep = 0;
-    // Warm Cmaj9 / Fmaj7 minimalist piano notes (Hz)
-    const pianoNotes = [261.63, 329.63, 392.00, 493.88, 587.33, 493.88, 392.00, 329.63, 220.00, 261.63, 329.63, 392.00, 174.61, 261.63, 329.63, 392.00];
+    const pianoNotes = [261.63, 329.63, 392.00, 493.88, 523.25, 493.88, 392.00, 329.63];
 
     function playWarmNote(freq) {
       if (!audioCtx) return;
       const now = audioCtx.currentTime;
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-
       osc.type = 'sine';
       osc.frequency.setValueAtTime(freq, now);
 
       gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.045, now + 0.08);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.4);
+      gain.gain.exponentialRampToValueAtTime(0.035, now + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
 
       osc.connect(gain);
       gain.connect(audioCtx.destination);
-
       osc.start(now);
-      osc.stop(now + 2.5);
+      osc.stop(now + 1.65);
     }
 
     function toggleAmbientBGM() {
       const btn = document.getElementById('bgmToggleBtn');
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+
       if (!isBgmPlaying) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) {
+          showToast('이 브라우저에서는 오디오를 지원하지 않습니다.');
+          return;
+        }
         if (!audioCtx) {
           audioCtx = new AudioContextClass();
         }
@@ -995,7 +1609,7 @@
       }
     }
 
-    // 8. Lightbox Gallery (실제 사진 교체 시 여기 배열의 경로도 동일하게 맞춰주세요)
+    // Lightbox Gallery (실제 사진 교체 시 여기 배열의 경로도 동일하게 맞춰주세요)
     const galleryImages = [
       'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=90',
       'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=90',
@@ -1005,6 +1619,7 @@
     ];
 
     function openLightbox(idx) {
+      if (isLoupeActive) return;
       const modal = document.getElementById('lightboxModal');
       document.getElementById('lbImage').src = galleryImages[idx];
       document.getElementById('lbCounter').textContent = `${idx + 1} / ${galleryImages.length}`;
@@ -1018,7 +1633,7 @@
       modal.classList.remove('flex');
     }
 
-    // 9. Hosts Bottom Sheet & Account Accordions
+    // Hosts Bottom Sheet & Account Accordions
     function openHostsModal() {
       const modal = document.getElementById('hostsModal');
       modal.classList.remove('hidden');
@@ -1045,7 +1660,7 @@
       }
     }
 
-    // 10. Clipboard Copy & Toast Notification
+    // Clipboard Copy & Toast Notification
     function copyText(text, message) {
       const temp = document.createElement('textarea');
       temp.value = text;
