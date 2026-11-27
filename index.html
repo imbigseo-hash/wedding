@@ -874,14 +874,13 @@
         >
           카카오맵
         </a>
-        <a
-          href="https://apis.openapi.sk.com/tmap/app/routes?appKey=&name=%EC%A0%9C%EC%9D%B4%EC%95%84%ED%8A%B8%EC%BB%A8%EB%B2%A4%EC%85%98"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          type="button"
+          onclick="openTmapNavigation()"
           class="py-3 rounded-2xl bg-applegray text-center text-[12px] font-medium text-pureblack border border-hairline active:scale-95 transition-transform"
         >
           티맵
-        </a>
+        </button>
       </div>
 
       <!-- Venue Parking Summary -->
@@ -1768,6 +1767,26 @@
         bar.classList.remove('opacity-100', 'translate-y-0');
         bar.classList.add('opacity-0', 'translate-y-2');
       }, 2400);
+    }
+
+    // Tmap App Deep-Link Launcher (No API Key Required)
+    function openTmapNavigation() {
+      const destination = encodeURIComponent('제이아트컨벤션');
+      const tmapScheme = `tmap://search?name=${destination}`;
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const storeUrl = isIOS
+        ? 'https://apps.apple.com/kr/app/t-map/id431589174'
+        : 'https://play.google.com/store/apps/details?id=com.skt.tmap.ku';
+
+      const start = Date.now();
+      window.location.href = tmapScheme;
+
+      setTimeout(() => {
+        if (!document.hidden && Date.now() - start < 2000) {
+          showToast('티맵 앱이 설치되어 있지 않아 스토어로 이동합니다.');
+          window.location.href = storeUrl;
+        }
+      }, 1500);
     }
   </script>
 </body>
